@@ -1,0 +1,29 @@
+body {
+    padding: 0;
+}
+
+div {
+    height: 100vh;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+div:nth-child(1) {
+    background-color: var(--palette-bg-1);
+}
+
+div:nth-child(2) {
+    background-color: var(--palette-bg-2);
+}
+
+div:nth-child(3) {
+    background-color: var(--palette-bg-3);
+}
+
+lord-icon {
+    display: block;
+    width: min(50vh, 100%);
+    height: auto;
+    max-width: 100%;
+    aspect-ratio: 1;
+}
