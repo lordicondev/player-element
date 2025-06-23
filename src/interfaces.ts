@@ -64,6 +64,11 @@ export interface Trigger {
      * The player was refreshed, for example, due to icon customization.
      */
     onRefresh?: () => void;
+
+    /**
+     * State change event. 
+     */
+    onState?: () => void;
 }
 
 /**

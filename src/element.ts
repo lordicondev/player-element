@@ -574,6 +574,9 @@ export class Element extends HTMLElement {
         }
 
         this._playerInstance.state = this.state;
+
+        // Notify the trigger instance about the state change.
+        this._triggerInstance?.onState?.();
     }
 
     /**
