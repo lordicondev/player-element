@@ -100,12 +100,8 @@ export class Morph implements Trigger {
         this.player.direction = 1;
 
         // Set custom animation segment.
-        this.player.lottieInstance!.setSegment(
-            segment[0],
-            segment[1],
-        );
+        this.player.setSegment(segment);
 
-        this.player.seekToStart();
         this.player.play();
     }
 
