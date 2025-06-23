@@ -1,7 +1,6 @@
 import { IconProperties, LegacyIconProperties, Player } from '@lordicon/web';
-import { IconData, IconLoader, Trigger, TriggerConstructor } from './interfaces';
+import { IconData, Trigger, TriggerConstructor } from './interfaces';
 import { parseColors, parseState, parseStroke, } from './parsers';
-import { isObjectLike } from './utils';
 
 /**
  * Defines the available strategies for loading icons in the custom element.
@@ -73,7 +72,6 @@ let styleSheet: CSSStyleSheet | null = null;
 type SUPPORTED_ATTRIBUTES = |
     'colors' |
     'src' |
-    'icon' |
     'state' |
     'trigger' |
     'loading' |
@@ -86,7 +84,6 @@ type SUPPORTED_ATTRIBUTES = |
 const OBSERVED_ATTRIBUTES: SUPPORTED_ATTRIBUTES[] = [
     'colors',
     'src',
-    'icon',
     'state',
     'trigger',
     'loading',
@@ -99,7 +96,6 @@ const OBSERVED_ATTRIBUTES: SUPPORTED_ATTRIBUTES[] = [
  * Handles icon loading, rendering, customization, and interaction logic.
  */
 export class Element extends HTMLElement {
-    protected static _iconLoader?: IconLoader;
     protected static _definedTriggers: Map<string, TriggerConstructor> = new Map<string, TriggerConstructor>();
 
     /**
@@ -114,17 +110,6 @@ export class Element extends HTMLElement {
      */
     static get observedAttributes() {
         return OBSERVED_ATTRIBUTES;
-    }
-
-    /**
-     * Assigns a custom icon loader function.
-     * This allows icons to be loaded from any source, such as a remote API.
-     * Must be set before defining the custom element.
-     * 
-     * @param loader The function responsible for loading icon data.
-     */
-    static setIconLoader(loader: IconLoader) {
-        Element._iconLoader = loader;
     }
 
     /**
@@ -465,22 +450,18 @@ export class Element extends HTMLElement {
     }
 
     /**
-     * Loads icon data using the assigned loader or from the 'src' attribute.
+     * Loads icon data from the 'src' attribute or uses the assigned icon data.
      * Returns the icon data object or undefined if loading fails.
      */
     protected async loadIconData(): Promise<IconData> {
-        let iconData = this.iconData;
+        let icon = this.icon;
 
-        if (!iconData) {
-            if (this.icon && Element._iconLoader) {
-                this._loadedIconData = iconData = await Element._iconLoader(this.icon);
-            } else if (this.src) {
-                const response = await fetch(this.src);
-                this._loadedIconData = iconData = await response.json();
-            }
+        if (!icon && this.src) {
+            const response = await fetch(this.src);
+            this._loadedIconData = icon = await response.json();
         }
 
-        return iconData;
+        return icon;
     }
 
     /**
@@ -622,45 +603,25 @@ export class Element extends HTMLElement {
     }
 
     /**
-     * Sets the icon for the element.
-     * Accepts either an icon name (string) or direct icon data (object).
-     * Automatically triggers a reload if the icon changes.
+     * Directly assigns icon data to the element.
+     * Triggers a reload if the data changes.
      */
-    set icon(value: IconData | string | undefined) {
-        const oldAssignedIconData = this._assignedIconData;
-
-        if (value && isObjectLike(value)) {
+    set icon(value: IconData | undefined) {
+        if (value !== this._assignedIconData) {
             this._assignedIconData = value;
 
-            if (oldAssignedIconData !== value) {
-                if (this.hasAttribute('icon')) {
-                    // remove attribution will trigger iconChanged
-                    this.removeAttribute('icon');
-                } else {
-                    this.iconChanged();
-                }
-            }
-        } else {
-            this._assignedIconData = undefined;
+            // Clear loaded icon data to avoid conflicts.
+            this._loadedIconData = undefined;
 
-            if (value && typeof value === 'string') {
-                this.setAttribute('icon', value);
-            } else {
-                if (this.hasAttribute('icon')) {
-                    // remove attribution will trigger iconChanged
-                    this.removeAttribute('icon');
-                } else if (oldAssignedIconData) {
-                    this.iconChanged();
-                }
-            }
+            this.iconChanged();
         }
     }
 
     /**
-     * Gets the current icon (either name or assigned icon data).
+     * Gets the currently assigned or loaded icon data.
      */
-    get icon(): IconData | string | undefined {
-        return this._assignedIconData || this.getAttribute('icon');
+    get icon(): IconData | undefined {
+        return this._assignedIconData || this._loadedIconData;
     }
 
     /**
@@ -805,24 +766,6 @@ export class Element extends HTMLElement {
             return this.getAttribute('stroke');
         }
         return null;
-    }
-
-    /**
-     * Directly assigns icon data to the element.
-     * Triggers a reload if the data changes.
-     */
-    set iconData(value: IconData | undefined) {
-        if (value !== this._assignedIconData) {
-            this._assignedIconData = value;
-            this.iconChanged();
-        }
-    }
-
-    /**
-     * Gets the currently assigned or loaded icon data.
-     */
-    get iconData(): IconData | undefined {
-        return this._assignedIconData || this._loadedIconData;
     }
 
     /**

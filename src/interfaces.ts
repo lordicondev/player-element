@@ -7,30 +7,6 @@ import type { Player } from '@lordicon/web';
 export type IconData = any;
 
 /**
- * A function that loads icon data by name.
- * 
- * Use this to provide a custom way to fetch icon data (e.g., from your own server).
- * 
- * **Important:** Set the icon loader before defining the `lord-icon` custom element.
- * 
- * Example:
- * ```js
- * import { defineElement, Element } from '@lordicon/element';
- * 
- * Element.setIconLoader(async (name) => {
- *   const response = await fetch(`https://example.com/icons/${name}.json`);
- *   return await response.json();
- * });
- * 
- * defineElement();
- * ```
- * 
- * @param name The name of the icon to load.
- * @returns A promise that resolves to the icon data.
- */
-export type IconLoader = (name: string) => Promise<IconData>;
-
-/**
  * Interface for creating custom triggers.
  * 
  * Triggers allow you to define custom interactions for the icon element.

@@ -16,8 +16,8 @@ const element = document.querySelector<Element>("lord-icon")!;
 // Index of the currently displayed icon.
 let index = 0;
 
-// Assigning iconData before defining the custom element using this setter is allowed.
-element.iconData = icons[index];
+// Assigning icon.
+element.icon = icons[index];
 
 // Change the icon every 2 seconds.
 setInterval(() => {
@@ -25,5 +25,5 @@ setInterval(() => {
     if (index >= icons.length) {
         index = 0;
     }
-    element.iconData = icons[index];
+    element.icon = icons[index];
 }, 2000);
