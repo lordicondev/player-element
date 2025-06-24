@@ -17,9 +17,9 @@ export class Morph implements Trigger {
     protected segments?: [FrameSegment, FrameSegment];
 
     /**
-     * Queue to manage segment playback requests.
+     * Queue to manage playback requests.
      */
-    protected segmentQueue: number[] = [];
+    protected queue: number[] = [];
 
     constructor(
         protected player: Player,
@@ -52,28 +52,18 @@ export class Morph implements Trigger {
             ])
 
             this.segments = undefined;
-            this.segmentQueue = [];
+            this.queue = [];
         }
     }
 
     onMouseEnter() {
-        if (this.segments) {
-            this.segmentQueue.push(0);
-            this.handleQueue();
-        } else {
-            this.player.direction = 1;
-            this.player.play();
-        }
+        this.queue.push(0);
+        this.handleQueue();
     }
 
     onMouseLeave() {
-        if (this.segments) {
-            this.segmentQueue.push(1);
-            this.handleQueue();
-        } else {
-            this.player.direction = -1;
-            this.player.play();
-        }
+        this.queue.push(1);
+        this.handleQueue();
     }
 
     onComplete() {
@@ -93,25 +83,30 @@ export class Morph implements Trigger {
         }
 
         // Reduce the queue size to the last action if multiple actions are queued.
-        if (this.segmentQueue.length >= 2) {
-            const c = Math.floor(this.segmentQueue.length / 2) * 2;
+        if (this.queue.length >= 2) {
+            const c = Math.floor(this.queue.length / 2) * 2;
             for (let i = 0; i < c; i++) {
-                this.segmentQueue.shift();
+                this.queue.shift();
             }
         }
 
-        if (!this.segmentQueue.length) {
+        if (!this.queue.length) {
             return;
         }
 
-        const index = this.segmentQueue.shift()!;
-        const segment = this.segments?.[index]!;
+        const index = this.queue.shift()!;
 
-        // Set default direction to forward.
-        this.player.direction = 1;
+        if (this.segments) {
+            const segment = this.segments?.[index]!;
 
-        // Set custom animation segment.
-        this.player.switchSegment(segment);
+            // Set default direction to forward.
+            this.player.direction = 1;
+
+            // Set custom animation segment.
+            this.player.switchSegment(segment);
+        } else {
+            this.player.direction = index === 0 ? 1 : -1;
+        }
 
         this.player.play();
     }
