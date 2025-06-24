@@ -94,7 +94,7 @@ export class Sequence implements Trigger {
 
     handleStep(action: string, params: string[]) {
         if (action === 'play') {
-            if (this.frameState) {
+            if (this.frameState !== null) {
                 this.player.state = this.frameState;
                 this.frameState = null;
             }
@@ -115,21 +115,51 @@ export class Sequence implements Trigger {
                 this.player.play();
             }, this.frameDelayFirst || 0);
         } else if (action === 'frame') {
-            let frameIndex = 0;
-            if (params.length && params[0].match(NUMBER_REGEX)) {
-                frameIndex = Math.max(0, Math.min(this.player.frameCount, +params[0]));
+            if (this.frameState !== null) {
+                this.player.state = this.frameState;
+                this.frameState = null;
             }
 
-            this.player.frame = frameIndex;
+            let frameIndexStart = 0;
+            let frameIndexEnd = 0;
 
-            this.timer = setTimeout(() => {
-                this.timer = null;
-                this.frameDelayFirst = null;
+            if (params.length >= 1 && params[0].match(NUMBER_REGEX)) {
+                frameIndexStart = +params[0];
+            }
 
-                this.step();
-            }, this.frameDelayFirst || 0);
+            if (params.length >= 2 && params[1].match(NUMBER_REGEX)) {
+                frameIndexEnd = Math.max(0, frameIndexStart, +params[1]);
+            } else {
+                frameIndexEnd = frameIndexStart;
+            }
+
+            const segment: [number, number] = [frameIndexStart, frameIndexEnd];
+            const state = this.player.availableStates.find(s => s.name === this.player.state);
+            if (state) {
+                segment[0] += state.time;
+                segment[1] += state.time;
+            }
+
+            if (frameIndexStart === frameIndexEnd) {
+                this.player.frame = frameIndexStart;
+
+                this.timer = setTimeout(() => {
+                    this.timer = null;
+                    this.frameDelayFirst = null;
+
+                    this.step();
+                }, this.frameDelayFirst || 0);
+            } else {
+                this.timer = setTimeout(() => {
+                    this.timer = null;
+                    this.frameDelayFirst = null;
+
+                    this.player.switchSegment(segment);
+                    this.player.play();
+                }, this.frameDelayFirst || 0);
+            }
         } else if (action === 'state') {
-            this.frameState = params[0];
+            this.frameState = params[0] || null;
 
             this.step();
         } else if (action === 'delay') {
