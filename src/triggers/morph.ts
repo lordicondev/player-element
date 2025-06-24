@@ -43,6 +43,17 @@ export class Morph implements Trigger {
 
         // Restore default player state.
         this.player.direction = 1;
+
+        // Restore original animation segment if it was set.
+        if (this.segments) {
+            this.player.switchSegment([
+                this.segments[0][0],
+                this.segments[1][1],
+            ])
+
+            this.segments = undefined;
+            this.segmentQueue = [];
+        }
     }
 
     onMouseEnter() {
@@ -100,7 +111,7 @@ export class Morph implements Trigger {
         this.player.direction = 1;
 
         // Set custom animation segment.
-        this.player.setSegment(segment);
+        this.player.switchSegment(segment);
 
         this.player.play();
     }
