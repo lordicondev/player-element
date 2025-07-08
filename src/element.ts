@@ -76,7 +76,8 @@ type SUPPORTED_ATTRIBUTES = |
     'trigger' |
     'loading' |
     'target' |
-    'stroke';
+    'stroke' |
+    'speed';
 
 /**
  * List of attributes observed by the custom element for changes.
@@ -89,6 +90,7 @@ const OBSERVED_ATTRIBUTES: SUPPORTED_ATTRIBUTES[] = [
     'loading',
     'target',
     'stroke',
+    'speed',
 ];
 
 /**
@@ -565,6 +567,28 @@ export class Element extends HTMLElement {
     }
 
     /**
+     * Called when the 'speed' attribute changes.
+     * Updates the Player's animation speed.
+     */
+    protected speedChanged() {
+        if (!this._playerInstance) {
+            return;
+        }
+
+        const speed = this.getAttribute('speed');
+        if (speed) {
+            const parsedSpeed = parseFloat(speed);
+            if (!isNaN(parsedSpeed)) {
+                this._playerInstance.speed = parsedSpeed;
+            } else {
+                this._playerInstance.speed = 1;
+            }
+        } else {
+            this._playerInstance.speed = 1;
+        }
+    }
+
+    /**
      * Called when the 'state' attribute changes.
      * Updates the Player's animation state.
      */
@@ -769,6 +793,33 @@ export class Element extends HTMLElement {
             return this.getAttribute('stroke');
         }
         return null;
+    }
+
+    /**
+     * Sets the animation speed for the icon.
+     * Accepts a number or a string that can be parsed to a number.
+     */
+    set speed(value: string | number | null) {
+        if (value) {
+            this.setAttribute('speed', String(value));
+        } else {
+            this.removeAttribute('speed');
+        }
+    }
+
+    /**
+     * Gets the current animation speed.
+     * Returns 1 if not set or invalid.
+     */
+    get speed(): number {
+        const speed = this.getAttribute('speed');
+        if (speed) {
+            const parsedSpeed = parseFloat(speed);
+            if (!isNaN(parsedSpeed)) {
+                return parsedSpeed;
+            }
+        }
+        return 1; // Default speed
     }
 
     /**

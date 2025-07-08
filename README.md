@@ -101,6 +101,7 @@ Supported events: ready, complete, frame, refresh.
 - `src`: Link to the icon.
 - `colors`: Assign colors in text notation, where the first part is the color name and the second part is its value. For example: "outline:#121331,primary:#3a3347".
 - `stroke`: Thickness for supported icons, for example: "light", "regular", "bold".
+- `speed`: Controls the playback speed of the animation. Accepts numeric values where 1 is normal speed, 0.5 is half speed, 2 is double speed, etc.
 - `trigger`: The trigger name to be assigned to the icon. By default, we support: "in," "click", "hover", "loop", "loop-on-hover", "morph", "boomerang", "sequence."
 - `target`: Query selector for the element on which events will be listened.
 - `state`: Choose an animation for the icon (a single icon in Lordicon can have multiple built-in animations - you can see which animations an icon supports in our editor).
