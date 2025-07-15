@@ -5,7 +5,7 @@ import { Player } from '@lordicon/web';
  * The __Loop__ trigger plays the animation from the first to the last frame infinitely, with no interaction necessary.
  */
 export class Loop implements Trigger {
-    protected playTimeout: any = null;
+    protected delayTimer: any = null;
 
     constructor(
         protected player: Player,
@@ -23,28 +23,32 @@ export class Loop implements Trigger {
     }
 
     onDisconnected() {
-        this.resetPlayDelayTimer();
+        this.resetDelayTimer();
     }
 
     play() {
-        this.resetPlayDelayTimer();
-
         if (this.delay > 0) {
-            this.playTimeout = setTimeout(() => {
-                this.player.playFromStart();
-            }, this.delay)
+            this.scheduleDelayedPlay();
         } else {
             this.player.playFromStart();
         }
     }
 
-    resetPlayDelayTimer() {
-        if (!this.playTimeout) {
+    protected scheduleDelayedPlay() {
+        this.resetDelayTimer();
+        this.delayTimer = setTimeout(() => {
+            this.player.playFromStart();
+            this.delayTimer = null;
+        }, this.delay);
+    }
+
+    protected resetDelayTimer() {
+        if (!this.delayTimer) {
             return;
         }
 
-        clearTimeout(this.playTimeout);
-        this.playTimeout = null;
+        clearTimeout(this.delayTimer);
+        this.delayTimer = null;
     }
 
     get delay() {

@@ -5,7 +5,7 @@ import { Player } from '@lordicon/web';
  * The __LoopOnHover__ trigger plays the animation from the first to the last frame in an infinite loop while the cursor hovers over the icon (target).
  */
 export class LoopOnHover implements Trigger {
-    protected playTimeout: any = null;
+    protected delayTimer: any = null;
     protected mouseIn: boolean = false;
 
     constructor(
@@ -26,21 +26,19 @@ export class LoopOnHover implements Trigger {
         this.targetElement.removeEventListener('mouseenter', this.onMouseEnter);
         this.targetElement.removeEventListener('mouseleave', this.onMouseLeave);
 
-        this.resetPlayDelayTimer();
+        this.resetDelayTimer();
     }
 
     onMouseEnter() {
         this.mouseIn = true;
 
-        if (!this.player.playing) {
-            this.play();
-        }
+        this.play();
     }
 
     onMouseLeave() {
         this.mouseIn = false;
 
-        this.resetPlayDelayTimer();
+        this.resetDelayTimer();
     }
 
     onComplete() {
@@ -48,28 +46,36 @@ export class LoopOnHover implements Trigger {
     }
 
     play() {
-        this.resetPlayDelayTimer();
+        if (this.player.playing) {
+            return;
+        }
 
         if (!this.mouseIn) {
             return;
         }
 
         if (this.delay > 0) {
-            this.playTimeout = setTimeout(() => {
-                this.player.playFromStart();
-            }, this.delay)
+            this.scheduleDelayedPlay();
         } else {
             this.player.playFromStart();
         }
     }
 
-    resetPlayDelayTimer() {
-        if (!this.playTimeout) {
+    protected scheduleDelayedPlay() {
+        this.resetDelayTimer();
+        this.delayTimer = setTimeout(() => {
+            this.player.playFromStart();
+            this.delayTimer = null;
+        }, this.delay);
+    }
+
+    protected resetDelayTimer() {
+        if (!this.delayTimer) {
             return;
         }
 
-        clearTimeout(this.playTimeout);
-        this.playTimeout = null;
+        clearTimeout(this.delayTimer);
+        this.delayTimer = null;
     }
 
     get delay() {

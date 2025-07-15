@@ -25,7 +25,7 @@ export class Sequence implements Trigger {
         protected element: HTMLElement,
         protected targetElement: HTMLElement,
     ) {
-        this.observer = new MutationObserver((mutationList, _observer) => {
+        this.observer = new MutationObserver((mutationList) => {
             for (const mutation of mutationList) {
                 if (mutation.type === 'attributes' && ['sequence', 'speed'].includes(mutation.attributeName!)) {
                     this.reset();
@@ -65,7 +65,7 @@ export class Sequence implements Trigger {
         this.player.speed = 1;
     }
 
-    reset() {
+    protected reset() {
         this.player.pause();
         this.player.speed = this.speed;
         this.sequenceIndex = 0;
@@ -77,7 +77,7 @@ export class Sequence implements Trigger {
         }
     }
 
-    takeStep() {
+    protected takeStep() {
         const steps = this.sequence.split(',');
 
         const step = steps[this.sequenceIndex];
@@ -92,7 +92,7 @@ export class Sequence implements Trigger {
         return { action, params };
     }
 
-    handleStep(action: string, params: string[]) {
+    protected handleStep(action: string, params: string[]) {
         if (action === 'play') {
             if (this.frameState !== null) {
                 this.player.state = this.frameState;
@@ -192,7 +192,7 @@ export class Sequence implements Trigger {
         }
     }
 
-    step() {
+    protected step() {
         const { action, params } = this.takeStep();
 
         if (!action) {

@@ -5,8 +5,8 @@ import { Trigger } from '../interfaces';
  * The __In__ trigger plays the animation when the icon (target) enters the user's viewport.
  */
 export class In implements Trigger {
-    protected playTimeout: any = null;
-    protected played: boolean = false;
+    protected connected: boolean = false;
+    protected delayTimer: any = null;
     protected intersectionObserver: IntersectionObserver | undefined;
 
     constructor(
@@ -14,54 +14,73 @@ export class In implements Trigger {
         protected element: HTMLElement,
         protected targetElement: HTMLElement,
     ) {
+        this.onClick = this.onClick.bind(this);
     }
 
     onConnected() {
+        this.connected = true;
+        this.targetElement.addEventListener('click', this.onClick);
+
         if (this.loading) {
-            this.play();
+            this.play(true);
         } else {
-            const callback: IntersectionObserverCallback = (entries, _observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        this.play();
-
-                        this.resetIntersectionObserver();
-                    }
-                });
-            };
-
-            this.intersectionObserver = new IntersectionObserver(callback);
-            this.intersectionObserver.observe(this.element);
+            this.initIntersectionObserver();
         }
     }
 
     onDisconnected() {
-        this.played = false;
+        this.connected = false;
+        this.targetElement.removeEventListener('click', this.onClick);
 
-        this.resetIntersectionObserver();
-        this.resetPlayDelayTimer();
+        this.cleanup();
     }
 
-    play() {
-        if (this.played) {
+    onClick() {
+        if (this.clickToReplay) {
+            this.play();
+        }
+    }
+
+    play(handleDelay?: boolean) {
+        if (this.player.playing) {
             return;
         }
 
-        this.played = true;
-
-        this.resetPlayDelayTimer();
-
-        if (this.delay > 0) {
-            this.playTimeout = setTimeout(() => {
-                this.player.playFromStart();
-                this.playTimeout = null;
-            }, this.delay)
+        if (handleDelay && this.delay > 0) {
+            this.scheduleDelayedPlay();
         } else {
             this.player.playFromStart();
         }
     }
 
-    resetIntersectionObserver() {
+    protected scheduleDelayedPlay(): void {
+        this.resetDelayTimer();
+        this.delayTimer = setTimeout(() => {
+            this.player.playFromStart();
+            this.delayTimer = null;
+        }, this.delay);
+    }
+
+    protected initIntersectionObserver() {
+        if (this.intersectionObserver) {
+            return;
+        }
+
+        const callback: IntersectionObserverCallback = (entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.play(true);
+
+                    this.resetIntersectionObserver();
+                }
+            });
+        };
+
+        this.intersectionObserver = new IntersectionObserver(callback, { threshold: 0.5 });
+        this.intersectionObserver.observe(this.element);
+    }
+
+    protected resetIntersectionObserver() {
         if (!this.intersectionObserver) {
             return;
         }
@@ -70,13 +89,18 @@ export class In implements Trigger {
         this.intersectionObserver = undefined;
     }
 
-    resetPlayDelayTimer() {
-        if (!this.playTimeout) {
+    protected resetDelayTimer() {
+        if (!this.delayTimer) {
             return;
         }
 
-        clearTimeout(this.playTimeout);
-        this.playTimeout = null;
+        clearTimeout(this.delayTimer);
+        this.delayTimer = null;
+    }
+
+    protected cleanup(): void {
+        this.resetIntersectionObserver();
+        this.resetDelayTimer();
     }
 
     get delay() {
@@ -86,5 +110,9 @@ export class In implements Trigger {
 
     get loading() {
         return this.element.hasAttribute('loading');
+    }
+
+    get clickToReplay() {
+        return this.element.hasAttribute('click-to-replay');
     }
 }
