@@ -522,7 +522,7 @@ export class Element extends HTMLElement {
 
         const TriggerClass = Element._definedTriggers.get(this.trigger);
         if (!TriggerClass) {
-            throw new Error(`Can't use unregistered trigger!`)
+            throw new Error(`Can't use unregistered trigger: '${this.trigger}'!`);
         }
 
         const targetElement = this.target ? this.closest<HTMLElement>(this.target) : null;

@@ -3,6 +3,10 @@ import { Trigger } from '../interfaces';
 
 type FrameSegment = [number, number];
 
+type TRIGGER_MODE = 'hover' | 'class' | 'manual';
+
+const MUTATION_OBSERVER_CONFIG = { attributes: true, childList: false, subtree: false, attributeOldValue: true };
+
 /**
  * The __Morph__ trigger plays the animation forward (from the first to the last frame) when hovering over the icon,
  * and reverses it (from the last to the first frame) when the cursor leaves.
@@ -25,7 +29,9 @@ export class Morph implements Trigger {
     protected connected: boolean = false;
     protected targetState?: string;
     protected delayTimer: any = null;
+    protected mutationTimer: any = null;
     protected intersectionObserver: IntersectionObserver | undefined;
+    protected observer: MutationObserver | undefined;
 
     constructor(
         protected player: Player,
@@ -46,6 +52,10 @@ export class Morph implements Trigger {
         this.targetElement.addEventListener('mouseenter', this.onMouseEnter);
         this.targetElement.addEventListener('mouseleave', this.onMouseLeave);
 
+        if (this.mode[0] === 'class') {
+            this.initMutationObserver();
+        }
+
         if (this.targetState) {
             if (this.loading) {
                 this.play(true);
@@ -65,15 +75,21 @@ export class Morph implements Trigger {
     }
 
     onMouseEnter() {
+        if (this.mode[0] !== 'hover') {
+            return;
+        }
+
         this.mouseIn = true;
-        this.queue.push(0);
-        this.handleQueue();
+        this.triggerEnter();
     }
 
     onMouseLeave() {
+        if (this.mode[0] !== 'hover') {
+            return;
+        }
+
         this.mouseIn = false;
-        this.queue.push(1);
-        this.handleQueue();
+        this.triggerLeave();
     }
 
     onComplete() {
@@ -122,6 +138,16 @@ export class Morph implements Trigger {
         if (this.connected) {
             this.play();
         }
+    }
+
+    triggerEnter() {
+        this.queue.push(0);
+        this.handleQueue();
+    }
+
+    triggerLeave() {
+        this.queue.push(1);
+        this.handleQueue();
     }
 
     protected scheduleDelayedPlay(): void {
@@ -210,6 +236,15 @@ export class Morph implements Trigger {
             segmentIn,
             segmentOut,
         ];
+
+        const mode = this.mode;
+        if (mode[0] === 'class') {
+            const isActive = this.targetElement.classList.contains(mode[1]!);
+            if (isActive) {
+                this.player.switchSegment(segmentIn);
+                this.player.frame = segmentIn[0];
+            }
+        }
     }
 
     protected initIntersectionObserver() {
@@ -238,6 +273,49 @@ export class Morph implements Trigger {
 
         this.intersectionObserver.unobserve(this.element);
         this.intersectionObserver = undefined;
+    }
+
+    protected initMutationObserver() {
+        if (!this.observer) {
+            this.observer = new MutationObserver((mutationList) => {
+                const mode = this.mode;
+                if (mode[0] !== 'class') {
+                    return;
+                }
+
+                const className = mode[1] || '';
+
+                for (const mutation of mutationList) {
+                    if (mutation.type === 'attributes' && ['class'].includes(mutation.attributeName!)) {
+                        const oldValue = (mutation.oldValue || '').split(' ').includes(className);
+                        const newValue = (this.targetElement.getAttribute('class') || '').split(' ').includes(className);
+
+                        if (oldValue !== newValue) {
+                            clearTimeout(this.mutationTimer);
+                            this.mutationTimer = setTimeout(() => {
+                                if (newValue) {
+                                    this.triggerEnter();
+                                } else {
+                                    this.triggerLeave();
+                                }
+                            }, 10);
+                        }
+                    }
+                }
+            });
+        }
+
+        this.observer.observe(this.targetElement, MUTATION_OBSERVER_CONFIG);
+    }
+
+    protected resetMutationObserver() {
+        clearTimeout(this.mutationTimer);
+        this.mutationTimer = null;
+
+        if (this.observer) {
+            this.observer.disconnect();
+            this.observer = undefined;
+        }
     }
 
     protected resetDelayTimer() {
@@ -278,6 +356,7 @@ export class Morph implements Trigger {
     protected cleanup() {
         this.resetPlayer();
         this.resetIntersectionObserver();
+        this.resetMutationObserver();
         this.resetDelayTimer();
         this.resetState();
     }
@@ -309,5 +388,20 @@ export class Morph implements Trigger {
 
     get clickToReplay() {
         return this.element.hasAttribute('click-to-replay');
+    }
+
+    get mode(): [TRIGGER_MODE, string?] {
+        if (this.element.hasAttribute('mode')) {
+            const mode = this.element.getAttribute('mode');
+            const parts = mode?.split(':') || [];
+            if (parts.length > 0 && ['hover', 'class', 'manual'].includes(parts[0])) {
+                if (parts[0] === 'class') {
+                    return [parts[0] as TRIGGER_MODE, parts[1] || 'active'];
+                }
+                return [parts[0] as TRIGGER_MODE];
+            }
+        }
+
+        return ['hover'];
     }
 }

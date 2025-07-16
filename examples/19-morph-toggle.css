@@ -1,0 +1,28 @@
+#list>div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+    --lord-icon-primary: currentColor;
+}
+
+#list>div.active {
+    font-weight: bold;
+}
+
+#list>div:hover {
+    color: var(--palette-primary);
+}
+
+#list>div:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+#list>div>lord-icon {
+    width: 32px;
+    height: 32px;
+}
