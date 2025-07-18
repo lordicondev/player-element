@@ -46,7 +46,7 @@ export class LoopOnHover implements Trigger {
     }
 
     play() {
-        if (this.player.playing) {
+        if (this.player.playing || this.delayTimer) {
             return;
         }
 

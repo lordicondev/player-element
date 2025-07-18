@@ -27,6 +27,10 @@ export class Loop implements Trigger {
     }
 
     play() {
+        if (this.player.playing || this.delayTimer) {
+            return;
+        }
+
         if (this.delay > 0) {
             this.scheduleDelayedPlay();
         } else {

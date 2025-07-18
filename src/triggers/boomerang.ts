@@ -84,7 +84,7 @@ export class Boomerang implements Trigger {
     }
 
     play(handleDelay?: boolean) {
-        if (this.player.playing) {
+        if (this.player.playing || this.delayTimer) {
             return;
         }
 
