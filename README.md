@@ -1,7 +1,7 @@
 # Lordicon Element Player
 
 Easily add, control, and customize animated [Lordicon](https://lordicon.com/) icons in your web projects with the `<lord-icon>` custom element.  
-Designed for anyone who prefers a simple, declarative way to use icons directly in HTML.  
+Designed for anyone who prefers a simple, declarative way to use animated icons directly in HTML.  
 Under the hood, it’s powered by [`@lordicon/web`](https://www.npmjs.com/package/@lordicon/web) for full performance and features.
 
 ## Features
@@ -9,7 +9,6 @@ Under the hood, it’s powered by [`@lordicon/web`](https://www.npmjs.com/packag
 - 🧩 **Custom Element**: Use `<lord-icon>` anywhere in your HTML or JavaScript.
 - 🎨 **Easy Customization**: Change colors, stroke, animation state, and more via attributes or JavaScript.
 - 🕹️ **Built-in Triggers**: Animate on hover, click, loop, morph, and more.
-- 🔔 **Lifecycle Events**: Listen for ready, complete, frame, and refresh events.
 - ⚡ **Flexible Loading**: Lazy, interaction-based, or delayed icon loading strategies.
 - 🛡️ **TypeScript Support**: Full typings for safe integration.
 
@@ -35,23 +34,32 @@ import { defineElement } from "@lordicon/element";
 defineElement();
 ```
 
-### Basic usage
+### Simple Example
 
-Example markup:
+Here's how to add your first animated icon:
 
 ```html
 <lord-icon trigger="hover" src="/my-icon.json"></lord-icon>
 ```
 
-### Customizing Properties
+### Customization via Attributes
+
+Configure colors, stroke, animation state, and more using HTML attributes:
+
 
 ```html
-   <lord-icon trigger="hover" colors="primary:#fdd394,secondary:#03a9f4" stroke="bold" state="hover-jump" src="/my-icon.json"></lord-icon>
+<lord-icon 
+    trigger="hover" 
+    colors="primary:#fdd394,secondary:#03a9f4" 
+    stroke="bold" 
+    state="hover-jump" 
+    src="/my-icon.json">
+</lord-icon>
 ```
 
-### Customizing Properties (JS)
+### Property Access
 
-You can update properties dynamically via JavaScript:
+All attributes are accessible as JavaScript properties:
 
 ```js
 const icon = document.querySelector('lord-icon');
@@ -61,16 +69,18 @@ icon.state = 'hover-jump';
 icon.trigger = 'click';
 ```
 
-### Built-in Triggers
+### Animation Triggers
 
-- `in` – Play when entering viewport.
-- `click` – Play on click.
-- `hover` – Play on hover.
-- `loop` – Loop animation.
-- `loop-on-hover` – Loop while hovered.
-- `morph` – Morph between states.
-- `boomerang` – Play forward and backward.
-- `sequence` – Play a sequence.
+Triggers define when and how your icons animate. They provide intuitive ways to control animation playback based on user interactions or viewport events:
+
+- `in` – Plays animation when the icon enters the viewport (intersection observer).
+- `click` – Triggers animation on mouse click or tap.
+- `hover` – Plays animation when user hovers over the icon.
+- `loop` – Continuously loops the animation with optional delays between cycles.
+- `loop-on-hover` – Loops animation only while the user is hovering over the icon.
+- `morph` – Smoothly transitions between different animation phases.
+- `boomerang` – Plays animation forward, then immediately backward in reverse.
+- `sequence` – Plays through a predefined sequence of animation states.
 
 ```html
 <lord-icon trigger="hover" src="/icons/party.json"></lord-icon>
@@ -78,40 +88,49 @@ icon.trigger = 'click';
 <lord-icon trigger="loop" src="/icons/loader.json"></lord-icon>
 ```
 
-### Events
-
-Listen for lifecycle events:
-
-```js
-icon.addEventListener('ready', () => {
-  console.log('Icon is ready!');
-});
-
-icon.addEventListener('complete', () => {
-  console.log('Animation completed!');
-});
-```
-
-Supported events: ready, complete, frame, refresh.
-
-## API
+## API Reference
 
 ### Attributes
 
-- `src`: Link to the icon.
-- `colors`: Assign colors in text notation, where the first part is the color name and the second part is its value. For example: "outline:#121331,primary:#3a3347".
-- `stroke`: Thickness for supported icons, for example: "light", "regular", "bold".
-- `speed`: Controls the playback speed of the animation. Accepts numeric values where 1 is normal speed, 0.5 is half speed, 2 is double speed, etc.
-- `trigger`: The trigger name to be assigned to the icon. By default, we support: "in," "click", "hover", "loop", "loop-on-hover", "morph", "boomerang", "sequence."
-- `target`: Query selector for the element on which events will be listened.
-- `state`: Choose an animation for the icon (a single icon in Lordicon can have multiple built-in animations - you can see which animations an icon supports in our editor).
-- `loading`: The method by which the icon will be loaded. It allows for delayed loading of the icon. Acceptable values: "lazy", "interaction".
-- `icon`: Icon name to load. This applies to those who want to load icons in conjunction with the API.
-- `delay`: It allows you to introduce a pause between animation plays. Available for the following triggers: "loop", "loop-on-hover", "in".
+All attributes can be set in HTML markup or accessed as JavaScript properties:
+
+- **`src`** – URL path to the icon JSON file. Example: `"/icons/heart.json"`
+- **`colors`** – Color palette in key-value format. Use color names from the icon's palette as keys. Example: `"primary:#ff0000,secondary:#00ff00"`
+- **`stroke`** – Line thickness for supported icons. Available values: `"light"`, `"regular"`, `"bold"`
+- **`speed`** – Animation playback speed multiplier. Default is `1`. Use `0.5` for half speed, `2` for double speed, etc.
+- **`trigger`** – Animation trigger type. Available: `"in"`, `"click"`, `"hover"`, `"loop"`, `"loop-on-hover"`, `"morph"`, `"boomerang"`, `"sequence"`
+- **`target`** – CSS selector for the element that should receive trigger events instead of the icon itself
+- **`state`** – Specific animation state to play. Icons can have multiple built-in animations
+- **`loading`** – Loading strategy for performance optimization. Available: `"lazy"` (viewport), `"interaction"` (user action), `"delay"` (timed)
 
 ### Properties
 
-- `ready` – `true` if ready.
-- `readyPromise` – Promise that resolves when ready.
-- `playerInstance` – Access underlying Player instance from `@lordicon/web`.
-- `triggerInstance` – Access current trigger instance.
+Read-only properties for accessing element state and instances:
+
+- **`ready`** – Boolean indicating if the icon is fully initialized and ready for interaction
+- **`readyPromise`** – Promise that resolves when the element becomes ready
+- **`playerInstance`** – Direct access to the underlying Player instance from `@lordicon/web`
+- **`triggerInstance`** – Reference to the current active trigger instance
+- **`animationContainer`** – DOM element containing the actual animation (inside shadow DOM)
+
+### Ready State Handling
+
+Player initialization is inherently asynchronous due to resource loading (JSON files), DOM setup, and animation preparation. The `ready` event and `readyPromise` provide reliable ways to ensure the icon (playerInstance + triggerInstance) is fully operational before programmatic interaction.
+
+The element provides a `ready` event for tracking player initialization:
+
+```js
+const icon = document.querySelector('lord-icon');
+
+icon.addEventListener('ready', () => {
+  console.log('Icon is ready!');
+});
+```
+
+For convenient handling, you can also use the `readyPromise` getter:
+
+```js
+// Wait for the icon to be ready
+await icon.readyPromise;
+console.log('Icon is now ready!');
+```

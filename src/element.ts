@@ -236,10 +236,10 @@ export class Element extends HTMLElement {
                 }
             };
 
-            // delay time
-            const delay = this.hasAttribute('delay') ? +this.getAttribute('delay')! : 0;
+            // Get the delay duration from the attribute or use a default value.
+            const delay = this.hasAttribute('loading-delay') ? +this.getAttribute('loading-delay')! : 0;
 
-            // delay loading
+            // Delay loading
             setTimeout(() => {
                 if (this.delayedLoading) {
                     this.delayedLoading();
