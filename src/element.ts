@@ -55,10 +55,6 @@ const ELEMENT_STYLE = `
         width: 100%;
         height: 100%;
     }
-
-    .body.ready ::slotted(*) {
-        display: none;
-    }
 `;
 
 /**
@@ -131,6 +127,7 @@ export class Element extends HTMLElement {
     protected _loadedIconData?: IconData;
     protected _triggerInstance?: Trigger;
     protected _playerInstance?: Player;
+    protected _animationContainer?: HTMLElement;
 
     /**
      * Stores a callback for deferred icon loading, used by lazy/interation/delay strategies.
@@ -296,9 +293,29 @@ export class Element extends HTMLElement {
         container.classList.add('body');
         this._root.appendChild(container);
 
-        // Add slot for projected content.
+        // Store reference to the animation container
+        this._animationContainer = container;
+
+        // Create slot for light DOM content.
+        this.createSlot();
+    }
+
+    /**
+     * Creates a slot element inside the shadow DOM for projecting light DOM content.
+     */
+    protected createSlot() {
         const slot = document.createElement('slot');
-        container.appendChild(slot);
+        this._root!.appendChild(slot);
+    }
+
+    /**
+     * Destroys the slot element from the shadow DOM.
+     */
+    protected destroySlot() {
+        const slot = this._root!.querySelector('slot');
+        if (slot) {
+            this._root!.removeChild(slot);
+        }
     }
 
     /**
@@ -413,8 +430,8 @@ export class Element extends HTMLElement {
             }
         });
 
-        // Mark the animation container and element as ready
-        this.animationContainer!.classList.add('ready');
+        // Remove the slot for light DOM content as the icon is now ready.
+        this.destroySlot();
 
         this._ready = true;
 
@@ -446,8 +463,8 @@ export class Element extends HTMLElement {
             this._playerInstance.destroy();
             this._playerInstance = undefined;
 
-            // Remove ready class from animation container.
-            this.animationContainer!.classList.remove('ready');
+            // Recreate the slot for light DOM content.
+            this.createSlot();
         }
     }
 
@@ -863,6 +880,6 @@ export class Element extends HTMLElement {
      * Returns the animation container element inside the shadow DOM.
      */
     get animationContainer(): HTMLElement | undefined {
-        return this._root!.lastElementChild as any;
+        return this._animationContainer;
     }
 }
