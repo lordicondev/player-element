@@ -13,7 +13,7 @@ export type LoadingType = 'lazy' | 'interaction' | 'delay';
 /**
  * List of DOM events that can trigger icon loading when using the 'interaction' loading strategy.
  */
-const INTERSECTION_LOADING_EVENTS = ['click', 'mouseenter', 'mouseleave'];
+const INTERACTION_LOADING_EVENTS = ['click', 'mouseenter', 'mouseleave'];
 
 /**
  * Checks if the browser supports constructable stylesheets for better style encapsulation.
@@ -188,8 +188,8 @@ export class Element extends HTMLElement {
             let interactionEvent: string | undefined = undefined;
 
             this.delayedLoading = (cancel?: boolean) => {
-                for (const eventName of INTERSECTION_LOADING_EVENTS) {
-                    (targetElement || this).removeEventListener(eventName, intersectionCallback);
+                for (const eventName of INTERACTION_LOADING_EVENTS) {
+                    (targetElement || this).removeEventListener(eventName, interactionCallback);
                 }
                 this.delayedLoading = null;
 
@@ -202,9 +202,9 @@ export class Element extends HTMLElement {
                 }
             };
 
-            const targetElement = this.target ? this.closest<HTMLElement>(this.target) : null;
+            const targetElement = this.target ? this.findTarget(this.target) : null;
 
-            let intersectionCallback: (this: Element, event: Event) => void = (event: Event) => {
+            let interactionCallback: (this: Element, event: Event) => void = (event: Event) => {
                 const eventName = event?.type;
 
                 if (!interactionEvent) {
@@ -217,11 +217,11 @@ export class Element extends HTMLElement {
                 }
             }
 
-            intersectionCallback = intersectionCallback.bind(this);
+            interactionCallback = interactionCallback.bind(this);
 
             // Attach event listeners for all supported interaction events.
-            for (const eventName of INTERSECTION_LOADING_EVENTS) {
-                (targetElement || this).addEventListener(eventName, intersectionCallback);
+            for (const eventName of INTERACTION_LOADING_EVENTS) {
+                (targetElement || this).addEventListener(eventName, interactionCallback);
             }
         } else if (this.loading === 'delay') {
             // Delay loading: load icon after a specified timeout.
@@ -263,6 +263,65 @@ export class Element extends HTMLElement {
         this.destroyPlayer();
 
         this._isConnected = false;
+    }
+
+    /**
+     * Finds a target element by traversing up the DOM tree.
+     * It first attempts to find the target using `closest()`. If that fails,
+     * it falls back to a method that can traverse across Shadow DOM boundaries.
+     * @param selector The CSS selector for the target element.
+     * @returns The found HTMLElement or null.
+     */
+    protected findTarget(selector: string): HTMLElement | null {
+        // First, try the simple, fast `closest()` method.
+        const closestTarget = this.closest<HTMLElement>(selector);
+        if (closestTarget) {
+            return closestTarget;
+        }
+
+        // If `closest()` fails, it might be because the target is outside this shadow DOM.
+        // Fallback to a method that can cross shadow boundaries.
+        const root = this.getRootNode();
+        if (root instanceof ShadowRoot && root.host) {
+            return this.findTargetAcrossShadowBoundaries(root.host, selector);
+        }
+
+        return null;
+    }
+
+    /**
+     * Helper method to find a target by traversing up from a starting element,
+     * crossing shadow boundaries if necessary.
+     * @param startElement The element to start searching from.
+     * @param selector The CSS selector for the target element.
+     * @returns The found HTMLElement or null.
+     */
+    private findTargetAcrossShadowBoundaries(startElement: globalThis.Element | null, selector: string): HTMLElement | null {
+        let current: Node | null = startElement;
+
+        while (current) {
+            // Check if the current node is an element and matches the selector
+            if (current.nodeType === Node.ELEMENT_NODE && (current as globalThis.Element).matches(selector)) {
+                return current as HTMLElement;
+            }
+
+            // Move up to the parent node
+            if (current.parentNode) {
+                current = current.parentNode;
+            } else {
+                // If there's no parentNode, we might be at a shadow root.
+                // Get the host of the shadow root to continue traversal.
+                const root = current.getRootNode();
+                if (root instanceof ShadowRoot) {
+                    current = root.host;
+                } else {
+                    // We've reached the top of the main document
+                    break;
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -542,7 +601,7 @@ export class Element extends HTMLElement {
             throw new Error(`Can't use unregistered trigger: '${this.trigger}'!`);
         }
 
-        const targetElement = this.target ? this.closest<HTMLElement>(this.target) : null;
+        const targetElement = this.target ? this.findTarget(this.target) : null;
 
         this._triggerInstance = new TriggerClass(
             this._playerInstance,
