@@ -1,12 +1,17 @@
-import { resolve } from 'path';
+import path, { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
     plugins: [
         dts({
-            copyDtsFiles: true,
-            rollupTypes: true,
+            insertTypesEntry: true,
+            beforeWriteFile: (filePath, content) => {
+                return {
+                    filePath: filePath.replace(`${path.sep}dist${path.sep}src${path.sep}`, `${path.sep}dist${path.sep}`),
+                    content,
+                };
+            },
         }),
     ],
     build: {

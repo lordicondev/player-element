@@ -1,6 +1,6 @@
 {
     "name": "@lordicon/element",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "This package offers developers a convenient method for embedding, controlling, and customizing animated icons from Lordicon within web projects.",
     "repository": "https://github.com/lordicondev/player-element",
     "homepage": "https://lordicon.com/",
@@ -24,18 +24,17 @@
         "prepack": "npm run build"
     },
     "dependencies": {
-        "@lordicon/web": "^1.0.0"
+        "@lordicon/web": "^1.0.1"
     },
     "devDependencies": {
-        "vite": "^6.2.3",
+        "vite": "^8.0.8",
         "vite-plugin-dts": "^4.5.4",
-        "concurrently": "^9.1.2",
-        "eslint-config-prettier": "^9.1.0",
-        "eslint": "^8.54.0",
-        "prettier": "^3.2.5",
-        "typescript": "^5.3.2",
-        "@typescript-eslint/eslint-plugin": "^6.12.0",
-        "@typescript-eslint/parser": "^6.12.0",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint": "^10.2.0",
+        "prettier": "^3.8.2",
+        "typescript": "^6.0.2",
+        "@typescript-eslint/eslint-plugin": "^8.58.1",
+        "@typescript-eslint/parser": "^8.58.1",
         "@types/node": "^22.13.13"
     }
 }
