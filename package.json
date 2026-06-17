@@ -1,6 +1,6 @@
 {
     "name": "@lordicon/element",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "This package offers developers a convenient method for embedding, controlling, and customizing animated icons from Lordicon within web projects.",
     "repository": "https://github.com/lordicondev/player-element",
     "homepage": "https://lordicon.com/",
@@ -24,7 +24,7 @@
         "prepack": "npm run build"
     },
     "dependencies": {
-        "@lordicon/web": "^1.2.0"
+        "@lordicon/web": "^1.2.1"
     },
     "devDependencies": {
         "vite": "^8.0.16",
