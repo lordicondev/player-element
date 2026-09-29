@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Sequence</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Sequence</h1>
+        <p>
+            A script of steps, separated by commas: <code>play</code>, <code>show</code>,
+            <code>wait</code> and <code>stop</code>. It repeats unless it ends with
+            <code>stop</code>.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(play in-reveal, wait 500, play hover-jump, wait 1000)"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    play in-reveal,
+    wait 500,
+    play hover-jump,
+    wait 1000
+)"</pre>
+                    <p>Two states, one after the other, with pauses.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(play morph-select there, wait 1000, play morph-select back, wait 1000)"
+                    src="/icons/morph-select.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    play morph-select there,
+    wait 1000,
+    play morph-select back,
+    wait 1000
+)"</pre>
+                    <p>The two halves of a morph: to the second look, and back.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(play morph-unlocked, wait 1000, play morph-unlocked reverse, wait 1000)"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    play morph-unlocked,
+    wait 1000,
+    play morph-unlocked reverse,
+    wait 1000
+)"</pre>
+                    <p>A morph without a ratio: forwards, then backwards.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(play in-reveal 0-60, wait 800, play in-reveal 61-end, wait 800)"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    play in-reveal 0-60,
+    wait 800,
+    play in-reveal 61-end,
+    wait 800
+)"</pre>
+                    <p>Part of a state: frames counted from its start, both ends included.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(play in-reveal, stop)"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    play in-reveal,
+    stop
+)"</pre>
+                    <p>Plays once and stops.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(show morph-select there)"
+                    src="/icons/morph-select.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    show morph-select there
+)"</pre>
+                    <p>
+                        A still: the morph's second look. A script with no play or wait runs once.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="sequence(show in-reveal end)"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+trigger="sequence(
+    show in-reveal end
+)"</pre>
+                    <p>A still: the last frame of a state.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

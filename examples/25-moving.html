@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Moving an icon</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./25-moving.css" />
+        <script type="module" src="/main.ts"></script>
+        <script type="module" src="./25-moving.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Moving an icon</h1>
+        <p>
+            An icon moved on the page (a list reordered, say) keeps playing. This one follows the
+            card it is in (<code>target=".card"</code>). Its intro plays once; moving it neither
+            loads it again nor replays the intro.
+        </p>
+        <div class="controls">
+            <button id="move">Move to the other card</button>
+        </div>
+        <div class="cards">
+            <div class="card" id="first">
+                <lord-icon
+                    id="moving"
+                    intro="in-reveal"
+                    trigger="hover"
+                    state="hover-jump"
+                    target=".card"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <span>Hover this card</span>
+            </div>
+            <div class="card" id="second"><span>Or this one</span></div>
+        </div>
+    </body>
+</html>

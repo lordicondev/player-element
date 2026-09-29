@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Loading after a delay</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./13-loading-delay.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Loading after a delay</h1>
+        <p>
+            <code>loading="delay:…"</code> loads the icon a moment after the page, wherever it is.
+            Whatever is inside the element shows until then.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon loading="delay:1500" trigger="hover" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>loading="delay:1500"</pre>
+                    <p>Appears after one and a half seconds.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon loading="delay:3000" trigger="hover" src="/icons/lock.json"
+                    ><img alt="" src="/icons/lock.svg"
+                /></lord-icon>
+                <div>
+                    <pre>
+loading="delay:3000"
+  &lt;img src="lock.svg" /&gt;</pre>
+                    <p>After three seconds; an image stands in until then.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

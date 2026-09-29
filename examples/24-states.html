@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>States in CSS</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./24-states.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>States in CSS</h1>
+        <p>
+            CSS sees where an icon is: <code>:state(waiting)</code>, <code>loading</code>,
+            <code>ready</code>, <code>error</code>, <code>intro</code> and <code>playing</code>.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon
+                    class="fade"
+                    loading="delay:1500"
+                    trigger="hover"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+lord-icon { opacity: 0 }
+lord-icon:state(ready) { opacity: 1 }</pre>
+                    <p>Fades in once ready, after a second and a half.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon class="fade" trigger="hover" src="/icons/missing.json"></lord-icon>
+                <div>
+                    <pre>lord-icon:state(error) { … }</pre>
+                    <p>The icon cannot load: the page shows it.</p>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="play-button">
+                    <lord-icon trigger="click" target="button" src="/icons/lock.json"></lord-icon>
+                </button>
+                <div>
+                    <pre>button:has(lord-icon:state(playing)) { … }</pre>
+                    <p>Click it: the button is marked while its icon plays.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

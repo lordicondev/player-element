@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Follow</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./04-follow.css" />
+        <script type="module" src="/04-follow.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Follow</h1>
+        <p>
+            <code>follow</code> keeps the icon in step with an attribute on the target: a pressed
+            button, a selected item, a count, a stage of work.
+        </p>
+        <h2>A toggle button</h2>
+        <p>
+            <code>trigger="follow" target="button"</code> follows <code>aria-pressed</code>: a morph
+            goes to its second look when the button is pressed. Click the buttons.
+        </p>
+        <div class="controls">
+            <button type="button" class="toggle" aria-pressed="false">
+                <lord-icon
+                    trigger="follow"
+                    target="button"
+                    state="morph-select"
+                    src="/icons/morph-select.json"
+                ></lord-icon>
+            </button>
+            <button type="button" class="toggle" aria-pressed="false">
+                <lord-icon
+                    trigger="follow"
+                    target="button"
+                    state="morph-unlocked"
+                    src="/icons/lock.json"
+                ></lord-icon>
+            </button>
+        </div>
+
+        <h2>A selected item</h2>
+        <p><code>trigger="follow(aria-selected)" target="div"</code>. Click a row.</p>
+        <div id="list">
+            <div aria-selected="true">
+                <lord-icon
+                    trigger="follow(aria-selected)"
+                    target="div"
+                    state="morph-select"
+                    src="/icons/morph-account.json"
+                ></lord-icon>
+                <span>Account</span>
+            </div>
+            <div aria-selected="false">
+                <lord-icon
+                    trigger="follow(aria-selected)"
+                    target="div"
+                    state="morph-select"
+                    src="/icons/morph-extension.json"
+                ></lord-icon>
+                <span>Extensions</span>
+            </div>
+            <div aria-selected="false">
+                <lord-icon
+                    trigger="follow(aria-selected)"
+                    target="div"
+                    state="morph-select"
+                    src="/icons/morph-search.json"
+                ></lord-icon>
+                <span>Search</span>
+            </div>
+        </div>
+
+        <h2>A count</h2>
+        <p>
+            <code>trigger="follow(data-count)"</code>: an entrance when the count leaves zero, a
+            nudge when it goes up again.
+        </p>
+        <div class="controls counter">
+            <lord-icon
+                trigger="follow(data-count)"
+                target=".counter"
+                state="in-reveal"
+                src="/icons/coins.json"
+            ></lord-icon>
+            <button type="button" id="count-up">+1</button>
+            <button type="button" id="count-reset">reset</button>
+            <span id="count">0</span>
+        </div>
+
+        <h2>A stage of work</h2>
+        <p>
+            <code>trigger="follow(data-stage, busy=loop-cycle, done=morph-check)"</code>: a state
+            per value. The loop finishes its round before the next state plays; the morph goes to
+            its check and back when the stage returns to idle.
+        </p>
+        <div class="controls stage" data-stage="idle">
+            <lord-icon
+                trigger="follow(data-stage, busy=loop-cycle, done=morph-check)"
+                target=".stage"
+                state="morph-check"
+                src="/icons/download.json"
+            ></lord-icon>
+            <button type="button" id="stage-run">run</button>
+            <span id="stage">idle</span>
+        </div>
+    </body>
+</html>

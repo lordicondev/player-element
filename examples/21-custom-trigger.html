@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>A custom trigger</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/21-custom-trigger.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>A custom trigger</h1>
+        <p>
+            A trigger of your own, built on <code>BaseTrigger</code>: each click plays the animation
+            the other way.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon
+                    class="clickable"
+                    trigger="ping-pong"
+                    state="morph-unlocked"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="ping-pong"</pre>
+                    <p>Click, then click again.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    class="clickable"
+                    trigger="ping-pong(end)"
+                    state="morph-unlocked"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="ping-pong(end)"</pre>
+                    <p>Starts from the last frame: <code>end</code> is its first option.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

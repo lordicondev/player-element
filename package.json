@@ -1,40 +1,69 @@
 {
     "name": "@lordicon/element",
-    "version": "2.3.1",
-    "description": "This package offers developers a convenient method for embedding, controlling, and customizing animated icons from Lordicon within web projects.",
+    "version": "3.0.0",
+    "description": "The <lord-icon> custom element: animated Lordicon icons driven by markup, with triggers that react to control state.",
     "repository": "https://github.com/lordicondev/player-element",
     "homepage": "https://lordicon.com/",
     "keywords": [
         "lordicon",
         "lottie",
         "icon",
-        "animation"
+        "animation",
+        "custom-element",
+        "web-component"
     ],
     "author": "Lordicon <dev@lordicon.com>",
     "license": "MIT",
-    "private": false,
-    "sideEffects": false,
     "type": "module",
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts",
+    "sideEffects": [
+        "./dist/lordicon.js"
+    ],
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./lordicon": "./dist/lordicon.js",
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "jsdelivr": "./dist/lordicon.js",
+    "unpkg": "./dist/lordicon.js",
+    "files": [
+        "dist",
+        "README.md",
+        "LICENSE.md",
+        "CHANGELOG.md"
+    ],
+    "engines": {
+        "node": ">=22"
+    },
     "scripts": {
         "start": "vite --config vite-examples.config.ts",
-        "release": "vite build --config vite-release.config.ts",
-        "build": "vite build",
+        "build": "vite build && vite build --mode standalone",
+        "test": "vitest run",
+        "lint": "eslint .",
+        "format": "prettier --write .",
+        "format:check": "prettier --check .",
+        "check:types": "tsc --noEmit",
+        "check": "npm run check:types && npm run lint && npm run format:check",
         "prepack": "npm run build"
     },
     "dependencies": {
-        "@lordicon/web": "^1.2.1"
+        "@lordicon/web": "^2.1.0"
     },
     "devDependencies": {
-        "vite": "^8.0.16",
-        "vite-plugin-dts": "^5.0.2",
-        "eslint-config-prettier": "^10.1.8",
-        "eslint": "^10.5.0",
-        "prettier": "^3.8.4",
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^26.5.1",
+        "eslint": "^10.10.0",
+        "globals": "^17.12.0",
+        "happy-dom": "^20.14.5",
+        "prettier": "^3.9.6",
         "typescript": "^6.0.3",
-        "@typescript-eslint/eslint-plugin": "^8.61.1",
-        "@typescript-eslint/parser": "^8.61.1",
-        "@types/node": "^22.13.13"
+        "typescript-eslint": "^8.70.0",
+        "vite": "^8.3.0",
+        "vite-plugin-dts": "^5.0.2",
+        "vitest": "^5.0.1"
     }
 }

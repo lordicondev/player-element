@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Lazy loading</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./15-loading-lazy.css" />
+        <script type="module" src="/15-loading-lazy.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Lazy loading</h1>
+        <p>
+            <code>loading="lazy"</code> loads an icon when it scrolls into view. These fade in on
+            <code>ready</code>.
+        </p>
+        <p class="note">Icons loaded: <b id="loaded">0</b> of 3. Scroll down.</p>
+        <div class="spacer"></div>
+        <div class="rows">
+            <div class="row">
+                <lord-icon
+                    class="fade"
+                    loading="lazy"
+                    intro
+                    trigger="hover"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>loading="lazy" intro</pre>
+                    <p>Loaded when it came into view.</p>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <lord-icon
+                    class="fade"
+                    loading="lazy"
+                    intro
+                    trigger="hover"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>loading="lazy" intro</pre>
+                    <p>This one too.</p>
+                </div>
+            </div>
+            <div class="spacer"></div>
+            <div class="row">
+                <lord-icon
+                    class="fade"
+                    loading="lazy"
+                    intro
+                    trigger="hover"
+                    src="/icons/puzzle.json"
+                ></lord-icon>
+                <div>
+                    <pre>loading="lazy" intro</pre>
+                    <p>And the last one.</p>
+                </div>
+            </div>
+            <div class="spacer"></div>
+        </div>
+    </body>
+</html>

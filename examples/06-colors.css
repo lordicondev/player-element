@@ -1,0 +1,8 @@
+[data-ink] {
+    color: #fdd394;
+    cursor: pointer;
+}
+
+[data-ink]:hover {
+    color: #03a9f4;
+}

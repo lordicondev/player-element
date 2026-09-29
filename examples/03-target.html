@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Target</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Target</h1>
+        <p>
+            <code>target</code> names an ancestor the trigger listens to. Here each row is the
+            target: hover anywhere on it.
+        </p>
+        <div class="rows">
+            <div class="row" style="cursor: pointer">
+                <lord-icon trigger="hover" target=".row" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="hover" target=".row"</pre>
+                    <p>Plays when the pointer enters the row.</p>
+                </div>
+            </div>
+            <div class="row" style="cursor: pointer">
+                <lord-icon
+                    trigger="loop-on-hover"
+                    target=".row"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="loop-on-hover" target=".row"</pre>
+                    <p>Loops while the pointer is on the row.</p>
+                </div>
+            </div>
+            <div class="row" style="cursor: pointer">
+                <lord-icon
+                    trigger="morph"
+                    state="morph-unlocked"
+                    target=".row"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="morph" state="morph-unlocked" target=".row"</pre>
+                    <p>Unlocks while the pointer is on the row.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

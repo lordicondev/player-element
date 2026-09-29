@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>A custom trigger with states</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/22-custom-trigger-states.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>A custom trigger with states</h1>
+        <p>
+            A trash can that plays its own states: a click fills or empties it, a hover nudges it
+            the way that fits.
+        </p>
+        <lord-icon class="clickable" id="trash" trigger="trash" src="/icons/trash.json"></lord-icon>
+        <p>The same states from outside, through the element:</p>
+        <div class="controls">
+            <button type="button" data-state="in-trash-empty">intro</button>
+            <button type="button" data-state="morph-trash-full">fill</button>
+            <button type="button" data-state="morph-trash-full-to-empty">empty</button>
+        </div>
+    </body>
+</html>

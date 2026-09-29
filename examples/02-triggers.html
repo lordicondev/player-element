@@ -1,89 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <title>Triggers</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <title>Triggers</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="/main.css" />
-    <script type="module" src="/main.ts"></script>
-</head>
-
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Trigger</th>
-                <th>Example</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><i>none</i></td>
-                <td>
-                    <lord-icon src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>click</td>
-                <td>
-                    <lord-icon trigger="click" src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>hover</td>
-                <td>
-                    <lord-icon trigger="hover" src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>loop</td>
-                <td>
-                    <lord-icon trigger="loop" src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="loop" delay="1000" src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>loop-on-hover</td>
-                <td>
-                    <lord-icon trigger="loop-on-hover" src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="loop-on-hover" delay="1000" src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>morph</td>
-                <td>
-                    <lord-icon trigger="morph" state="morph-unlocked" src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="morph" state="morph-select" src="/icons/morph-select.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>boomerang</td>
-                <td>
-                    <lord-icon trigger="boomerang" state="morph-unlocked" src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="boomerang" state="morph-select" src="/icons/morph-select.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>sequence</td>
-                <td>
-                    <lord-icon trigger="sequence"
-                        sequence="state:in-reveal,play,state:hover-locked,play,state:morph-unlocked,play,state:hover-unlocked,play,state:morph-unlocked,play:reverse,delay:first:last:500,state:in-reveal,play:reverse"
-                        src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="sequence"
-                        sequence="state:morph-select,delay:500,frame:0:30,delay:1000,frame:30:60"
-                        src="/icons/morph-select.json"></lord-icon>
-                </td>
-            </tr>
-            <tr>
-                <td>in</td>
-                <td>
-                    <lord-icon trigger="in" state="in-reveal" src="/icons/lock.json"></lord-icon>
-                    <lord-icon trigger="in" state="in-reveal" delay="1000" src="/icons/lock.json"></lord-icon>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>
-
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Triggers</h1>
+        <p>
+            The built-in triggers, one per row. <a href="/04-follow.html">follow</a> and
+            <a href="/05-sequence.html">sequence</a> have pages of their own.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon trigger="hover" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="hover"</pre>
+                    <p>Plays once when the pointer enters, or keyboard focus lands on the icon.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="click" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="click"</pre>
+                    <p>Plays on every click.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="in" state="in-reveal" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="in" state="in-reveal"</pre>
+                    <p>Plays once, when half of the icon is in view.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="in(1000)" state="in-reveal" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="in(1000)" state="in-reveal"</pre>
+                    <p>The same, a second later.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="loop"</pre>
+                    <p>Plays over and over.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop(1000)" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="loop(1000)"</pre>
+                    <p>With a pause of a second between rounds.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop-on-hover" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>trigger="loop-on-hover"</pre>
+                    <p>Loops while the pointer is over the icon; the round in progress finishes.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="morph"
+                    state="morph-select"
+                    src="/icons/morph-select.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="morph" state="morph-select"</pre>
+                    <p>
+                        Goes to a second look while the pointer is over the icon, and back when it
+                        leaves. This morph has a ratio in its marker: the way there and the way back
+                        are two halves.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="morph"
+                    state="morph-unlocked"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="morph" state="morph-unlocked"</pre>
+                    <p>
+                        A morph without a ratio: forwards on the way there, backwards on the way
+                        back.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="boomerang"
+                    state="morph-select"
+                    src="/icons/morph-select.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="boomerang" state="morph-select"</pre>
+                    <p>There and straight back when the pointer enters.</p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

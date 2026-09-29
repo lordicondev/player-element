@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>States</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>States</h1>
+        <p>
+            An icon holds several animations, its states. <code>state</code> picks the one the
+            trigger plays.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon trigger="loop" state="in-reveal" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>state="in-reveal"</pre>
+                    <p>An entrance.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop" state="hover-jump" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>state="hover-jump"</pre>
+                    <p>A hover effect.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop" state="loop-spin" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>state="loop-spin"</pre>
+                    <p>A loop; also this icon's default state.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop" state="*" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>state="*"</pre>
+                    <p>All the states, one after the other.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

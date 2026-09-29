@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Intro out of view</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/12-intro-in-view.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Intro out of view</h1>
+        <p>
+            The icon at the bottom of this page is ready as soon as it loads, but its intro waits
+            until you scroll to it.
+        </p>
+        <p class="note">
+            Ready: <b id="ready">no</b>. Intro played: <b id="played">no</b>. Scroll down.
+        </p>
+        <div class="spacer"></div>
+        <div class="rows">
+            <div class="row">
+                <lord-icon id="icon" intro trigger="hover" src="/icons/lock-alt.json"></lord-icon>
+                <div>
+                    <pre>intro trigger="hover"</pre>
+                    <p>Here it is: the entrance plays now.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

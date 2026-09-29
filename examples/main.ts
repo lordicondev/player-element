@@ -1,1 +1,1 @@
-import '../src/release';
+import '../src/standalone.ts';

@@ -1,118 +1,28 @@
-import { Player } from '@lordicon/web';
-import { Trigger } from '../interfaces';
+import { whenVisible } from '../element/loading/lazy.ts';
+import { BaseTrigger } from './base.ts';
 
 /**
- * The __In__ trigger plays the animation when the icon (target) enters the user's viewport.
+ * Plays the animation once, when at least half of the icon has entered the viewport.
+ * `in(300)` waits before playing. Under reduced motion the icon jumps to its last frame.
  */
-export class In implements Trigger {
-    protected connected: boolean = false;
-    protected delayTimer: any = null;
-    protected intersectionObserver: IntersectionObserver | undefined;
+export class In extends BaseTrigger {
+    static readonly primary = 'delay';
 
-    constructor(
-        protected player: Player,
-        protected element: HTMLElement,
-        protected targetElement: HTMLElement,
-    ) {
-        this.onClick = this.onClick.bind(this);
+    onReady(): void {
+        whenVisible(this.element, this.signal, 0.5).then(
+            () => this.arrive(),
+            () => {}, // torn down before it was seen
+        );
     }
 
-    onConnected() {
-        this.connected = true;
-        this.targetElement.addEventListener('click', this.onClick);
-
-        if (this.loading) {
-            this.play(true);
-        } else {
-            this.initIntersectionObserver();
-        }
-    }
-
-    onDisconnected() {
-        this.connected = false;
-        this.targetElement.removeEventListener('click', this.onClick);
-
-        this.cleanup();
-    }
-
-    onClick() {
-        if (this.clickToReplay) {
-            this.play();
-        }
-    }
-
-    play(handleDelay?: boolean) {
-        if (this.player.playing || this.delayTimer) {
+    private arrive(): void {
+        if (this.reducedMotion) {
+            this.player.seek('end');
             return;
         }
 
-        if (handleDelay && this.delay > 0) {
-            this.scheduleDelayedPlay();
-        } else {
-            this.player.playFromStart();
-        }
-    }
-
-    protected scheduleDelayedPlay(): void {
-        this.resetDelayTimer();
-        this.delayTimer = setTimeout(() => {
-            this.player.playFromStart();
-            this.delayTimer = null;
-        }, this.delay);
-    }
-
-    protected initIntersectionObserver() {
-        if (this.intersectionObserver) {
-            return;
-        }
-
-        const callback: IntersectionObserverCallback = (entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.play(true);
-
-                    this.resetIntersectionObserver();
-                }
-            });
-        };
-
-        this.intersectionObserver = new IntersectionObserver(callback, { threshold: 0.5 });
-        this.intersectionObserver.observe(this.element);
-    }
-
-    protected resetIntersectionObserver() {
-        if (!this.intersectionObserver) {
-            return;
-        }
-
-        this.intersectionObserver.unobserve(this.element);
-        this.intersectionObserver = undefined;
-    }
-
-    protected resetDelayTimer() {
-        if (!this.delayTimer) {
-            return;
-        }
-
-        clearTimeout(this.delayTimer);
-        this.delayTimer = null;
-    }
-
-    protected cleanup(): void {
-        this.resetIntersectionObserver();
-        this.resetDelayTimer();
-    }
-
-    get delay() {
-        const value = this.element.hasAttribute('delay') ? +(this.element.getAttribute('delay') || 0) : 0;
-        return Math.max(value, 0);
-    }
-
-    get loading() {
-        return this.element.hasAttribute('loading');
-    }
-
-    get clickToReplay() {
-        return this.element.hasAttribute('click-to-replay');
+        const delay = this.number('delay', 0);
+        if (delay > 0) this.timeout(() => void this.player.play({ from: 'start' }), delay);
+        else this.player.play({ from: 'start' });
     }
 }

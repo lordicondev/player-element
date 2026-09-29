@@ -1,0 +1,27 @@
+pre {
+    max-width: 640px;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 320px;
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    animation: slide-in 800ms ease-out;
+}
+
+.card > lord-icon {
+    width: 48px;
+    height: 48px;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(160px);
+    }
+}

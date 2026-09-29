@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Reduced motion</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/20-reduced-motion.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Reduced motion</h1>
+        <p>
+            What each kind of trigger does when the viewer asks for less motion. Your system asks:
+            <b id="preference">no</b>. Switch the setting; the icons follow without a reload.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon trigger="loop" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>trigger="loop"</pre>
+                    <p>Stays still.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="loop" motion="always" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>trigger="loop" motion="always"</pre>
+                    <p>Loops anyway.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="morph"
+                    state="morph-unlocked"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>trigger="morph" state="morph-unlocked"</pre>
+                    <p>Jumps to the other look.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon trigger="in" state="in-reveal" src="/icons/puzzle.json"></lord-icon>
+                <div>
+                    <pre>trigger="in" state="in-reveal"</pre>
+                    <p>Shows the last frame.</p>
+                </div>
+            </div>
+        </div>
+        <p>
+            <code>defineElement({ motion: 'always' })</code> does the same for every icon on the
+            page; <code>motion="auto"</code> on one icon brings the default back for it.
+        </p>
+    </body>
+</html>

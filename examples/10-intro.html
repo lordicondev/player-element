@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Intro</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <script type="module" src="/10-intro.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Intro</h1>
+        <p>
+            <code>intro</code> plays one state first, the first time the icon is in view; then the
+            trigger takes over. <a href="#" id="again">Reload the page</a> to see them again.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon intro trigger="hover" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>intro trigger="hover"</pre>
+                    <p>The first <code>in-*</code> state, then a hover.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon intro="hover-jump" trigger="hover" src="/icons/coins.json"></lord-icon>
+                <div>
+                    <pre>intro="hover-jump" trigger="hover"</pre>
+                    <p>A state named by the attribute.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon intro="delay=800" trigger="hover" src="/icons/puzzle.json"></lord-icon>
+                <div>
+                    <pre>intro="delay=800" trigger="hover"</pre>
+                    <p>A pause before the intro.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    intro
+                    trigger="loop"
+                    state="loop-spin"
+                    src="/icons/coins.json"
+                ></lord-icon>
+                <div>
+                    <pre>intro trigger="loop" state="loop-spin"</pre>
+                    <p>The entrance, then the loop.</p>
+                </div>
+            </div>
+        </div>
+        <p>
+            An icon is <code>ready</code> before its intro plays, and a method call such as
+            <code>play()</code> cuts the intro short. See also
+            <a href="/11-intro-after.html">intro after an animation</a> and
+            <a href="/12-intro-in-view.html">intro out of view</a>.
+        </p>
+    </body>
+</html>

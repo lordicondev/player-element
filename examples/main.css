@@ -1,16 +1,16 @@
 :root {
     --palette-font: #3c3c3c;
     --palette-primary: #08c18a;
-    --palette-bg-1: hsl(50deg 34% 85%);
-    --palette-bg-2: hsl(100deg 34% 85%);
-    --palette-bg-3: hsl(150deg 34% 85%);
+
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
 }
 
 body {
-    color: var(--palette-font);
-    padding: 10px;
     margin: 0;
-    line-height: 1.8;
+    padding: 24px;
+    background: white;
+    color: var(--palette-font);
 }
 
 a {
@@ -22,25 +22,85 @@ a:hover {
     text-decoration: underline;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
+h1 {
+    font-size: 20px;
+    margin: 0 0 16px;
 }
 
-table,
-td,
-th {
-    border: 1px solid #d2d2d8;
-    padding: 10px;
+h2 {
+    font-size: 16px;
+    margin: 32px 0 8px;
+}
+
+p {
+    max-width: 640px;
+}
+
+code,
+pre {
+    font-family: ui-monospace, monospace;
+    font-size: 13px;
+}
+
+pre {
+    margin: 0;
+    padding: 8px 10px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+}
+
+button {
+    font: inherit;
 }
 
 lord-icon {
     display: inline-block;
-    width: 150px;
-    height: 150px;
+    width: 96px;
+    height: 96px;
 }
 
-lord-icon[trigger=click],
+lord-icon[trigger='click'],
 .clickable {
     cursor: pointer;
+}
+
+/* One example per row: the icon, then its code and what it does. */
+.rows {
+    max-width: 760px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 96px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.row p {
+    margin: 8px 0 0;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin: 16px 0;
+}
+
+/* Pages about scrolling: room to scroll, and a note that stays in sight. */
+.note {
+    position: sticky;
+    top: 0;
+    padding: 8px 0;
+    background: white;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.spacer {
+    height: 120vh;
 }

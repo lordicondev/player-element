@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Intro after an animation</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./11-intro-after.css" />
+        <script type="module" src="/11-intro-after.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Intro after an animation</h1>
+        <p>
+            <code>intro="…, after=.card"</code> waits for an ancestor to stop moving. Add a card: it
+            slides in, and its icon plays once it has stopped.
+        </p>
+        <div class="controls"><button type="button" id="add">add a card</button></div>
+        <pre>
+&lt;div class="card"&gt;
+    &lt;lord-icon intro="hover-pinch, after=.card" trigger="hover" target=".card" …&gt;&lt;/lord-icon&gt;
+&lt;/div&gt;</pre>
+        <div id="cards"></div>
+        <template id="card">
+            <div class="card">
+                <lord-icon
+                    intro="hover-pinch, after=.card"
+                    trigger="hover"
+                    target=".card"
+                    src="/icons/morph-account.json"
+                ></lord-icon>
+                <span>A new card</span>
+            </div>
+        </template>
+    </body>
+</html>

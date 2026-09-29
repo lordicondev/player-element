@@ -1,85 +1,45 @@
-import { Trigger } from '../interfaces';
-import { Player } from '@lordicon/web';
+import { BaseTrigger } from './base.ts';
+import type { TriggerContext } from './types.ts';
 
 /**
- * The __LoopOnHover__ trigger plays the animation from the first to the last frame in an infinite loop while the cursor hovers over the icon (target).
+ * Loops the animation while the pointer is over the target. The round in progress finishes
+ * after the pointer leaves. `loop-on-hover(500)` pauses between rounds.
+ * Under reduced motion nothing plays.
  */
-export class LoopOnHover implements Trigger {
-    protected delayTimer: any = null;
-    protected mouseIn: boolean = false;
+export class LoopOnHover extends BaseTrigger {
+    static readonly primary = 'delay';
 
-    constructor(
-        protected player: Player,
-        protected element: HTMLElement,
-        protected targetElement: HTMLElement,
-    ) {
-        this.onMouseEnter = this.onMouseEnter.bind(this);
-        this.onMouseLeave = this.onMouseLeave.bind(this);
+    #over = false;
+    #cancelDelay: (() => void) | null = null;
+
+    constructor(context: TriggerContext) {
+        super(context);
+        this.listen(this.target, 'pointerenter', () => {
+            this.#over = true;
+            if (!this.player.playing) this.round();
+        });
+        this.listen(this.target, 'pointerleave', () => {
+            this.#over = false;
+            this.#cancelDelay?.();
+            this.#cancelDelay = null;
+        });
     }
 
-    onConnected() {
-        this.targetElement.addEventListener('mouseenter', this.onMouseEnter);
-        this.targetElement.addEventListener('mouseleave', this.onMouseLeave);
+    onComplete(): void {
+        if (this.#over) this.round();
     }
 
-    onDisconnected() {
-        this.targetElement.removeEventListener('mouseenter', this.onMouseEnter);
-        this.targetElement.removeEventListener('mouseleave', this.onMouseLeave);
+    private round(): void {
+        if (!this.player.ready || this.reducedMotion || this.#cancelDelay) return;
 
-        this.resetDelayTimer();
-    }
-
-    onMouseEnter() {
-        this.mouseIn = true;
-
-        this.play();
-    }
-
-    onMouseLeave() {
-        this.mouseIn = false;
-
-        this.resetDelayTimer();
-    }
-
-    onComplete() {
-        this.play();
-    }
-
-    play() {
-        if (this.player.playing || this.delayTimer) {
-            return;
-        }
-
-        if (!this.mouseIn) {
-            return;
-        }
-
-        if (this.delay > 0) {
-            this.scheduleDelayedPlay();
+        const delay = this.number('delay', 0);
+        if (delay > 0) {
+            this.#cancelDelay = this.timeout(() => {
+                this.#cancelDelay = null;
+                this.player.play({ from: 'start' });
+            }, delay);
         } else {
-            this.player.playFromStart();
+            this.player.play({ from: 'start' });
         }
-    }
-
-    protected scheduleDelayedPlay() {
-        this.resetDelayTimer();
-        this.delayTimer = setTimeout(() => {
-            this.player.playFromStart();
-            this.delayTimer = null;
-        }, this.delay);
-    }
-
-    protected resetDelayTimer() {
-        if (!this.delayTimer) {
-            return;
-        }
-
-        clearTimeout(this.delayTimer);
-        this.delayTimer = null;
-    }
-
-    get delay() {
-        const value = this.element.hasAttribute('delay') ? +(this.element.getAttribute('delay') || 0) : 0;
-        return Math.max(value, 0);
     }
 }

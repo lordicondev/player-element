@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Icon data</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./18-icon-data.css" />
+        <script type="module" src="/18-icon-data.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Icon data</h1>
+        <p>
+            The <code>icon</code> property takes the icon's data instead of <code>src</code>. This
+            one gets a new icon every two seconds.
+        </p>
+        <lord-icon id="icon" trigger="hover"></lord-icon>
+        <pre>icon.icon = await (await fetch('/icons/lock.json')).json();</pre>
+    </body>
+</html>

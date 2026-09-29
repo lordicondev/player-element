@@ -1,0 +1,8 @@
+.scroll {
+    height: 400vh;
+}
+
+.scroll lord-icon {
+    position: sticky;
+    top: 24px;
+}

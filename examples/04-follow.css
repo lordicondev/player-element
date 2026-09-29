@@ -1,0 +1,46 @@
+.toggle {
+    padding: 8px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
+
+.toggle[aria-pressed='true'] {
+    border-color: var(--palette-primary);
+}
+
+.toggle lord-icon,
+.counter lord-icon,
+.stage lord-icon {
+    width: 48px;
+    height: 48px;
+}
+
+#list {
+    max-width: 320px;
+}
+
+#list > div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e5e5;
+    cursor: pointer;
+    user-select: none;
+    --lord-icon-primary: currentColor;
+}
+
+#list > div[aria-selected='true'] {
+    font-weight: bold;
+}
+
+#list > div:hover {
+    color: var(--palette-primary);
+}
+
+#list lord-icon {
+    width: 32px;
+    height: 32px;
+}

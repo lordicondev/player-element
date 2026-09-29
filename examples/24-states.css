@@ -1,0 +1,26 @@
+.fade {
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.fade:state(ready),
+.fade:state(error) {
+    opacity: 1;
+}
+
+.fade:state(error) {
+    border-radius: 8px;
+    background: repeating-linear-gradient(45deg, #fdecea 0 8px, #fff 8px 16px);
+}
+
+.play-button {
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+}
+
+.play-button:has(lord-icon:state(playing)) {
+    border-color: var(--palette-primary);
+}

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Loading on interaction</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./14-loading-interaction.css" />
+        <script type="module" src="/main.ts"></script>
+        <script type="module" src="./14-loading-interaction.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Loading on interaction</h1>
+        <p>
+            <code>loading="interaction"</code> waits for the first pointer, click or keyboard focus
+            on the icon, then loads it and plays. An image inside stands in until then.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon loading="interaction" trigger="hover" src="/icons/lock.json"
+                    ><img alt="" src="/icons/lock.svg"
+                /></lord-icon>
+                <div>
+                    <pre>
+loading="interaction" trigger="hover"
+  &lt;img src="lock.svg" /&gt;</pre>
+                    <p>Hover: the icon loads, then plays.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    loading="interaction"
+                    trigger="morph"
+                    state="morph-detach"
+                    src="/icons/puzzle.json"
+                    ><img alt="" src="/icons/puzzle.svg"
+                /></lord-icon>
+                <div>
+                    <pre>
+loading="interaction" trigger="morph" state="morph-detach"
+  &lt;img src="puzzle.svg" /&gt;</pre>
+                    <p>Works with any trigger.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    id="on-demand"
+                    loading="interaction"
+                    trigger="hover"
+                    src="/icons/lock.json"
+                    ><img alt="" src="/icons/lock.svg"
+                /></lord-icon>
+                <div>
+                    <pre>
+loading="interaction" trigger="hover"
+await icon.load(); icon.play()</pre>
+                    <p>
+                        <button id="load" type="button">Load and play</button>
+                        <code>load()</code> loads the icon now, whatever it waits for, and resolves
+                        once it is ready.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

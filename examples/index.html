@@ -1,176 +1,96 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+    <head>
+        <title>@lordicon/element examples</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+    </head>
 
-<head>
-    <meta charset="utf-8" />
-    <title>Examples</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="/main.css" />
-</head>
+    <body>
+        <h1>@lordicon/element</h1>
+        <h2>Basics</h2>
+        <ul>
+            <li><a href="/01-getting-started.html">Getting started</a>: one script, one tag</li>
+            <li><a href="/02-triggers.html">Triggers</a>: the built-in ones</li>
+            <li><a href="/03-target.html">Target</a>: a trigger that listens to an ancestor</li>
+            <li><a href="/04-follow.html">Follow</a>: in step with an attribute</li>
+            <li><a href="/05-sequence.html">Sequence</a>: a script of steps</li>
+        </ul>
 
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Index</th>
-                <th>Example</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>01</td>
-                <td><a href="/01-release.html">Release</a></td>
-                <td>
-                    This example presents the easiest way to use the Lordicon custom
-                    element with released version.
-                </td>
-            </tr>
-            <tr>
-                <td>02</td>
-                <td><a href="/02-triggers.html">Triggers</a></td>
-                <td>Discover all the built-in animation triggers available.</td>
-            </tr>
-            <tr>
-                <td>03</td>
-                <td><a href="/03-trigger-target.html">Trigger target</a></td>
-                <td>
-                    Utilize the 'target' attribute to specify the parent element
-                    responsible for triggering the animation.
-                </td>
-            </tr>
-            <tr>
-                <td>04</td>
-                <td><a href="/04-customization.html">Customization</a></td>
-                <td>
-                    Learn about all the customizable attributes supported by the element.
-                </td>
-            </tr>
-            <tr>
-                <td>05</td>
-                <td><a href="/05-current-color.html">Current color</a></td>
-                <td>
-                    This case study presents, a class built into element: <b>current-color</b>.
-                    With this class, icon will inherit color from a parent.
-                </td>
-            </tr>
-            <tr>
-                <td>06</td>
-                <td><a href="/06-css-variables.html">CSS variables</a></td>
-                <td>Explore the use of CSS variables to customize colors.</td>
-            </tr>
-            <tr>
-                <td>07</td>
-                <td><a href="/07-background.html">Background</a></td>
-                <td>Discover how to use the element as a background.</td>
-            </tr>
-            <tr>
-                <td>08</td>
-                <td><a href="/08-manual-control.html">Manual control</a></td>
-                <td>Gain insights into manual interaction with icons and players.</td>
-            </tr>
-            <tr>
-                <td>09</td>
-                <td><a href="/09-icon-directly.html">Icon directly</a></td>
-                <td>
-                    An example of directly assigning a loaded icon to a custom element.
-                </td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td><a href="/10-state.html">State</a></td>
-                <td>Explore the use of icon state animations.</td>
-            </tr>
-            <tr>
-                <td>11</td>
-                <td><a href="/11-loading-lazy.html">Loading (lazy)</a></td>
-                <td>Learn how to load icons only when needed.</td>
-            </tr>
-            <tr>
-                <td>12</td>
-                <td>
-                    <a href="/12-loading-lazy-effect.html">Loading (lazy + effect)</a>
-                </td>
-                <td>
-                    Load icons only when needed and create a smooth, simultaneous fade-in
-                    effect after the load completes.
-                </td>
-            </tr>
-            <tr>
-                <td>13</td>
-                <td>
-                    <a href="/13-loading-placeholder.html">Loading (placeholder)</a>
-                </td>
-                <td>
-                    Display a small SVG placeholder until the custom element is ready.
-                </td>
-            </tr>
-            <tr>
-                <td>14</td>
-                <td>
-                    <a href="/14-loading-placeholder-interaction.html">Loading (placeholder + interaction)</a>
-                </td>
-                <td>
-                    Display a small SVG placeholder until the first user interaction with
-                    the element.
-                </td>
-            </tr>
-            <tr>
-                <td>15</td>
-                <td><a href="/15-custom-trigger.html">Custom trigger</a></td>
-                <td>
-                    This example demonstrates how to create a straightforward custom
-                    animation trigger.
-                </td>
-            </tr>
-            <tr>
-                <td>16</td>
-                <td>
-                    <a href="/16-custom-trigger-scroll.html">Custom trigger (scroll)</a>
-                </td>
-                <td>
-                    Create a custom trigger that plays an animation when a user scrolls
-                    the website.
-                </td>
-            </tr>
-            <tr>
-                <td>17</td>
-                <td>
-                    <a href="/17-custom-trigger-in-screen.html">Custom trigger (in screen)</a>
-                </td>
-                <td>
-                    Build an animation trigger that plays when the icon appears in the
-                    browser viewport.
-                </td>
-            </tr>
-            <tr>
-                <td>18</td>
-                <td>
-                    <a href="/18-custom-trigger-states.html">Custom trigger (states)</a>
-                </td>
-                <td>
-                    This example demonstrates complex usage of states with a custom
-                    trigger. See how the trash icon appears, fills, and erases as the user
-                    interacts.
-                </td>
-            </tr>
-            <tr>
-                <td>19</td>
-                <td><a href="/19-morph-toggle.html">Morph toggle</a></td>
-                <td>Switch morph animations with class toggling.</td>
-            </tr>
-            <tr>
-                <td>20</td>
-                <td><a href="/20-upload.html">Upload</a></td>
-                <td>Get a preview of uploaded files.</td>
-            </tr>
-            <tr>
-                <td>21</td>
-                <td><a href="/21-legacy.html">Legacy</a></td>
-                <td>Legacy icon file support (without markers).</td>
-            </tr>
-        </tbody>
-    </table>
-</body>
+        <h2>Looks</h2>
+        <ul>
+            <li>
+                <a href="/06-colors.html">Colours</a>: the attribute, CSS variables, current-color
+            </li>
+            <li>
+                <a href="/07-stroke-and-speed.html">Stroke and speed</a>: line width, playback speed
+            </li>
+            <li><a href="/08-background.html">Background</a>: an icon behind content</li>
+        </ul>
 
+        <h2>States and intro</h2>
+        <ul>
+            <li><a href="/09-states.html">States</a>: which animation the trigger plays</li>
+            <li><a href="/10-intro.html">Intro</a>: an entrance before the trigger</li>
+            <li>
+                <a href="/11-intro-after.html">Intro after an animation</a>: waiting for a card to
+                stop
+            </li>
+            <li>
+                <a href="/12-intro-in-view.html">Intro out of view</a>: waiting for the icon to be
+                seen
+            </li>
+        </ul>
+
+        <h2>Loading</h2>
+        <ul>
+            <li>
+                <a href="/13-loading-delay.html">Loading after a delay</a>: with an image in its
+                place
+            </li>
+            <li>
+                <a href="/14-loading-interaction.html">Loading on interaction</a>: on the first
+                pointer event
+            </li>
+            <li>
+                <a href="/15-loading-lazy.html">Lazy loading</a>: when the icon scrolls into view
+            </li>
+        </ul>
+
+        <h2>Script</h2>
+        <ul>
+            <li>
+                <a href="/16-methods.html">Methods and events</a>: play, pause, events, the player
+            </li>
+            <li><a href="/17-chaining.html">Chaining states</a>: one state after another</li>
+            <li><a href="/18-icon-data.html">Icon data</a>: the icon property</li>
+            <li><a href="/19-upload.html">An icon from a file</a>: a file of your own</li>
+        </ul>
+
+        <h2>Accessibility</h2>
+        <ul>
+            <li><a href="/20-reduced-motion.html">Reduced motion</a>: what each trigger does</li>
+        </ul>
+
+        <h2>Custom triggers</h2>
+        <ul>
+            <li><a href="/21-custom-trigger.html">A custom trigger</a>: clicks and direction</li>
+            <li>
+                <a href="/22-custom-trigger-states.html">A custom trigger with states</a>: its own
+                states
+            </li>
+            <li>
+                <a href="/23-custom-trigger-scroll.html">A custom trigger on scroll</a>: the page
+                scroll
+            </li>
+            <li>
+                <a href="/24-states.html">States in CSS</a>: <code>:state(ready)</code>,
+                <code>:state(error)</code>, <code>:state(playing)</code>
+            </li>
+            <li>
+                <a href="/25-moving.html">Moving an icon</a>: between cards, without loading again
+            </li>
+        </ul>
+    </body>
 </html>

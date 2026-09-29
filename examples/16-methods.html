@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Methods and events</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./16-methods.css" />
+        <script type="module" src="/16-methods.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Methods and events</h1>
+        <p>Drive the icon from script: methods, events, and the player behind it.</p>
+        <lord-icon id="icon" src="/icons/lock.json"></lord-icon>
+        <div class="controls">
+            <button type="button" id="play">play()</button>
+            <button type="button" id="pause">pause()</button>
+            <button type="button" id="forwards">play({ state: 'morph-unlocked' })</button>
+            <button type="button" id="backwards">
+                play({ state: 'morph-unlocked', reverse: true })
+            </button>
+            <button type="button" id="next-frames">player.seek(frame + 5)</button>
+        </div>
+        <p id="frame"></p>
+        <pre id="events"></pre>
+    </body>
+</html>

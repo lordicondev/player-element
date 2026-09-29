@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Colours</title>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./main.css" />
+        <link rel="stylesheet" href="./06-colors.css" />
+        <script type="module" src="/main.ts"></script>
+    </head>
+
+    <body>
+        <p><a href="/">Examples</a></p>
+        <h1>Colours</h1>
+        <p>
+            Colours from the <code>colors</code> attribute or from CSS, and
+            <code>current-color</code> for an icon that takes the colour of the text.
+        </p>
+        <div class="rows">
+            <div class="row">
+                <lord-icon trigger="hover" src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>&lt;lord-icon src="…"&gt;</pre>
+                    <p>The icon's own colours.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="hover"
+                    colors="primary:#fdd394,secondary:#03a9f4"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>colors="primary:#fdd394,secondary:#03a9f4"</pre>
+                    <p>Colours by name: any hex value or CSS colour name.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="hover"
+                    style="--lord-icon-primary: #009688"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>--lord-icon-primary: #009688</pre>
+                    <p>A colour from CSS.</p>
+                </div>
+            </div>
+            <div class="row">
+                <lord-icon
+                    trigger="hover"
+                    colors="primary:#b73a3a"
+                    style="--lord-icon-primary: #3a7db7"
+                    src="/icons/lock.json"
+                ></lord-icon>
+                <div>
+                    <pre>
+colors="primary:#b73a3a"
+--lord-icon-primary: #3a7db7</pre>
+                    <p>CSS wins over the attribute.</p>
+                </div>
+            </div>
+            <div class="row" data-ink>
+                <lord-icon trigger="hover" current-color src="/icons/lock.json"></lord-icon>
+                <div>
+                    <pre>current-color</pre>
+                    <p>
+                        Every part of the icon takes <code>color</code>, like text. Hover the row.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
