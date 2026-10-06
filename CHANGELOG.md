@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1
+
+### Fixed
+
+- A built-in trigger replaced through `defineElement({ triggers })` or `defineTrigger()` stays
+  through later calls of `defineElement()`. It used to go back to the built-in one whenever
+  `defineElement()` was called again, from another module say.
+
 ## 3.0.0
 
 Built on `@lordicon/web` 2.1: absolute frames, one `play(options)` that returns a promise.

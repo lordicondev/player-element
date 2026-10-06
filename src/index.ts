@@ -47,7 +47,10 @@ export type {
 export type DefineOptions = {
     /** The tag name. Default `lord-icon`. */
     tag?: string;
-    /** Extra triggers, or replacements for built-in ones, by name. */
+    /**
+     * Extra triggers, or replacements for built-in ones, by name. A replacement stays through
+     * later calls.
+     */
     triggers?: Record<string, TriggerConstructor>;
     /**
      * `always` animates even when the viewer asked for less motion. Default `auto`. Applies to
@@ -72,7 +75,12 @@ export function defineElement(options: DefineOptions = {}): void {
 
     // Only when given: a later call without it (from another module, say) keeps it.
     if (motion) LordIconElement.motion = motion;
-    for (const [name, trigger] of Object.entries({ ...BUILTIN_TRIGGERS, ...triggers })) {
+    // Built-in triggers fill in names not taken yet: a trigger the page put in their place
+    // stays, whichever call comes first. The page's own always go in.
+    for (const [name, trigger] of Object.entries(BUILTIN_TRIGGERS)) {
+        if (!LordIconElement.resolveTrigger(name)) LordIconElement.defineTrigger(name, trigger);
+    }
+    for (const [name, trigger] of Object.entries(triggers)) {
         LordIconElement.defineTrigger(name, trigger);
     }
 

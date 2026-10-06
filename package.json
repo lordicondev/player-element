@@ -1,6 +1,6 @@
 {
     "name": "@lordicon/element",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "description": "The <lord-icon> custom element: animated Lordicon icons driven by markup, with triggers that react to control state.",
     "repository": "https://github.com/lordicondev/player-element",
     "homepage": "https://lordicon.com/",

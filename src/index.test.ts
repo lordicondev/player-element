@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BaseTrigger, defineElement, LordIconElement } from './index.ts';
+import { BaseTrigger, defineElement, Hover, LordIconElement, Loop } from './index.ts';
 
 class Custom extends BaseTrigger {}
 
@@ -22,5 +22,20 @@ describe('defineElement', () => {
 
         defineElement({ motion: 'auto' });
         expect(LordIconElement.motion).toBe('auto');
+    });
+
+    it('keeps a built-in trigger the page replaced through later calls', () => {
+        class MyHover extends BaseTrigger {}
+        defineElement({ triggers: { hover: MyHover } });
+        defineElement();
+        defineElement({ tag: 'other-icon' });
+
+        expect(LordIconElement.resolveTrigger('hover')).toBe(MyHover);
+        // The names nobody took keep their built-in triggers.
+        expect(LordIconElement.resolveTrigger('loop')).toBe(Loop);
+
+        // Passing the built-in one puts it back.
+        defineElement({ triggers: { hover: Hover } });
+        expect(LordIconElement.resolveTrigger('hover')).toBe(Hover);
     });
 });

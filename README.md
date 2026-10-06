@@ -251,7 +251,8 @@ so on. Light DOM inside the element shows until the icon is ready, as a placehol
 
 **Frameworks.** The package imports on a server, where `defineElement()` does nothing. An icon
 moved on the page (a list reordered, say) keeps playing, without loading again.
-`defineElement()` also takes `tag` (default `lord-icon`) and `triggers` (your own, by name).
+`defineElement()` also takes `tag` (default `lord-icon`) and `triggers` (your own, by name; one
+under a built-in name replaces it, also through later calls).
 
 **Before the script loads**, `<lord-icon>` has no size of its own, and a placeholder inside it
 shows at its natural size. Give it both in your CSS:
