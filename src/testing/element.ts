@@ -1,5 +1,7 @@
 import { vi } from 'vitest';
+import type { ObservedAttribute } from '../element/attributes.ts';
 import { LordIconElement } from '../element/element.ts';
+import { defineElement } from '../index.ts';
 import type { IconData, IconProperties } from '../types.ts';
 import { defineForTests } from './context.ts';
 import { iconData } from './icon.ts';
@@ -69,6 +71,29 @@ export function mount(attributes: Record<string, string> = {}): LordIconElement 
     for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, value);
     document.body.append(element);
     return element;
+}
+
+/**
+ * Defines `tag` for icons already on the page, as a browser upgrades them: an
+ * `attributeChangedCallback` for each attribute, in the markup's order and connected already,
+ * then `connectedCallback`. happy-dom leaves the attribute callbacks out.
+ */
+export function defineOnPage(tag: string): void {
+    class Upgraded extends LordIconElement {
+        #upgraded = false;
+
+        connectedCallback(): void {
+            if (!this.#upgraded) {
+                this.#upgraded = true;
+                for (const { name, value } of [...this.attributes]) {
+                    if (!LordIconElement.observedAttributes.includes(name)) continue;
+                    this.attributeChangedCallback(name as ObservedAttribute, null, value);
+                }
+            }
+            super.connectedCallback();
+        }
+    }
+    defineElement({ tag, element: Upgraded });
 }
 
 /** Lets pending promises and timers settle. */

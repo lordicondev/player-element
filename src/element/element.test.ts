@@ -1,6 +1,13 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { defineForTests } from '../testing/context.ts';
-import { becomeReady, mount, settle, stubFetch, useStubPlayer } from '../testing/element.ts';
+import {
+    becomeReady,
+    defineOnPage,
+    mount,
+    settle,
+    stubFetch,
+    useStubPlayer,
+} from '../testing/element.ts';
 import { iconData } from '../testing/icon.ts';
 import { morphState } from '../testing/player-stub.ts';
 import { LordIconElement } from './element.ts';
@@ -341,6 +348,25 @@ describe('intro, loading and motion', () => {
         document.body.append(element);
 
         expect(warn).not.toHaveBeenCalled();
+        warn.mockRestore();
+    });
+
+    it('stay quiet after src on an icon upgraded on the page, which loads once', async () => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+        // Rendered on a server, src first as JSX writes it; the script defines the element later.
+        document.body.innerHTML =
+            '<html-icon src="/lock.json" intro loading="interaction" motion="always"></html-icon>';
+        defineOnPage('html-icon');
+        const element = document.body.firstElementChild as LordIconElement;
+        await settle();
+
+        expect(warn).not.toHaveBeenCalled();
+        expect(fetch).not.toHaveBeenCalled();
+
+        element.click();
+        await settle();
+        expect(fetch).toHaveBeenCalledOnce();
+        expect(stub.created).toHaveLength(1);
         warn.mockRestore();
     });
 });

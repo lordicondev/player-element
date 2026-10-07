@@ -215,8 +215,13 @@ export class LordIconElement extends Base {
         }
     }
 
-    /** `src` or `icon` changed: loads again on the page; off it, a pending move is over. */
+    /**
+     * `src` or `icon` changed: loads again on the page; off it, a pending move is over. Before
+     * the first `connectedCallback` (an icon upgraded on the page) connecting loads it, once
+     * every attribute has been seen.
+     */
     #reload(): void {
+        if (!this.#container) return;
         if (this.isConnected) this.#load();
         else if (this.#moving) this.#leave();
     }

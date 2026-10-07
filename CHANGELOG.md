@@ -1,5 +1,14 @@
 # Changelog
 
+## 3.0.2
+
+### Fixed
+
+- An icon already in the page's HTML when the element is defined (rendered on a server, or a
+  page loading the script as a module) no longer warns that `intro`, `loading` or `motion`
+  "changed after the icon started loading" when they come after `src`. It used to start
+  loading on `src` alone; it now loads once connected, after every attribute, as any icon.
+
 ## 3.0.1
 
 ### Fixed
